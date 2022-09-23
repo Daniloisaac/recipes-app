@@ -12,7 +12,7 @@ import AppProvider from './context/AppProvider';
 
 function App() {
   return (
-    <AppProvider>      
+    <AppProvider>
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={ Login } />
