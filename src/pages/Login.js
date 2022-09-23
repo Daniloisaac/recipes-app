@@ -1,25 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 function Login() {
-  // const {
-  // stateEmail,
-  // setStateEmail,
-  // statePassw,
-  // setStatePassw,
-  // stateDisable,
-  // setStateEnable,
-  // } = useContext(contexValue);
+  const [disableButton, setDisableButton] = useState(true);
+  const [inputEmail, setInputEmail] = useState('');
+  const [inputPassword, setInputPassword] = useState('');
+
+  useEffect(() => {
+    const numberValidation = 6;
+
+    const validationLengthInputs = inputEmail.length > numberValidation
+    && inputPassword.length > numberValidation;
+
+    const validationEmail = inputEmail.includes('@') && inputEmail.includes('.com');
+
+    setDisableButton(validationLengthInputs && validationEmail);
+  }, [inputEmail, inputPassword]); // eslint-disable-line
+
+  console.log(disableButton);
   return (
     <div>
       <label htmlFor="email-input">
         Email:
-        <input type="email" data-testid="email-input" />
+        <input
+          data-testid="email-input"
+          type="email"
+          name="email"
+          value={ inputEmail }
+          onChange={ ({ target }) => setInputEmail(target.value) }
+        />
       </label>
       <label htmlFor="password-input">
         Senha:
-        <input type="password" data-testid="password-input" />
+        <input
+          data-testid="password-input"
+          type="password"
+          name="password"
+          value={ inputPassword }
+          onChange={ ({ target }) => setInputPassword(target.value) }
+        />
       </label>
-      <button type="button" data-testid="login-submit-btn">
+      <button
+        type="button"
+        data-testid="login-submit-btn"
+        disabled={ !disableButton }
+      >
         Enter
       </button>
     </div>
