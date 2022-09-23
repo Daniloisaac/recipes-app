@@ -23,7 +23,6 @@ function Login() {
         Enter
       </button>
     </div>
-
   );
 }
 
