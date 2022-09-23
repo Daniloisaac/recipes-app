@@ -1,11 +1,24 @@
 import React from 'react';
 
 function Login() {
-  return (
+  const {
+    stateEmail,
+		// setStateEmail,
+    statePassw, 
+    // setStatePassw,
+		// stateDisable,
+		// setStateEnable,
+  } = contexValue;
+  return(
     <div>
-      Login
+      <input type="email" data-testid="email-input" value={ stateEmail } />
+      <input type="password" data-testid="password-input" value={ statePassw } />
+      <button type="button" data-testid="email-input">
+        Enter
+      </button>
     </div>
-  );
+
+  )
 }
 
 export default Login;
