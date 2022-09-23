@@ -2,7 +2,13 @@ import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Footer from './components/Footer';
+import Login from './pages/Login';
+import Meals from './pages/Meals';
+import Drinks from './pages/Drinks';
+import Profile from './pages/Profile';
+import DoneRecipes from './pages/DoneRecipes';
+import FavoriteRecipes from './pages/FavoriteRecipes';
+
 import AppProvider from './context/AppProvider';
 
 function App() {
@@ -16,7 +22,6 @@ function App() {
           <Route exact path="/profile" component={ Profile } />
           <Route exact path="done-recipes" component={ DoneRecipes } />
           <Route exact path="favorite-recipes" component={ FavoriteRecipes } />
-          <Footer />
         </Switch>
       </BrowserRouter>
     </AppProvider>
