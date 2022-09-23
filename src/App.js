@@ -8,7 +8,6 @@ import Drinks from './pages/Drinks';
 import Profile from './pages/Profile';
 import DoneRecipes from './pages/DoneRecipes';
 import FavoriteRecipes from './pages/FavoriteRecipes';
-
 import AppProvider from './context/AppProvider';
 
 function App() {

@@ -1,13 +1,23 @@
-// import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import React from 'react';
-// Quando adicionarem algum estado utilizar a linha 1 e apagar a 2;
+import PropTypes from 'prop-types';
 import AppContext from './AppContext';
 
 function AppProvider({ children }) {
-  // const contextValue = { initialState };
+  // const [stateEmail, setStateEmail] = useState('');
+  // const [ statePassw , setStatePassw ] = useState('');
+  // const [stateDisable, setStateEnable] = useState(false);
+  // const contextValue = {
+  // stateEmail,
+  // setStateEmail,
+  // statePassw,
+  // setStatePassw,
+  // stateDisable,
+  // setStateEnable,
+  // };
+  const contextValue = 'teste';
+
   return (
-    <AppContext.Provider>
+    <AppContext.Provider value={ contextValue }>
       {children}
     </AppContext.Provider>
   );
