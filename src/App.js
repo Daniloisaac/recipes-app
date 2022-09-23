@@ -1,12 +1,18 @@
 import React from 'react';
 import './App.css';
-import rockGlass from './images/rockGlass.svg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Footer from './components/Footer';
+import { Route, Switch } from 'react-router-dom';
+import AppProvider from './context/AppProvider';
 
 function App() {
   return (
-    <Footer />
+    <AppProvider>
+      <Switch>
+        <Route exact path="/" component={ Login } />
+        <Footer />
+      </Switch>
+    </AppProvider>
   );
 }
 
