@@ -7,6 +7,7 @@ import AppProvider from './context/AppProvider';
 
 function App() {
   return (
+<<<<<<< HEAD
     <AppProvider>
       <Switch>
         <Route exact path="/" component={ Login } />
@@ -18,6 +19,18 @@ function App() {
         <Footer />
       </Switch>
     </AppProvider>
+=======
+    <div className="meals">
+      <span className="logo">TRYBE 2.0</span>
+      <object
+        className="rocksGlass"
+        type="image/svg+xml"
+        data={ rockGlass }
+      >
+        Glass
+      </object>
+    </div>
+>>>>>>> origin
   );
 }
 
