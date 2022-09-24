@@ -7,16 +7,19 @@ function Login() {
 
   useEffect(() => {
     const numberValidation = 6;
-
     const validationLengthInputs = inputEmail.length > numberValidation
     && inputPassword.length > numberValidation;
-
     const validationEmail = inputEmail.includes('@') && inputEmail.includes('.com');
-
     setDisableButton(validationLengthInputs && validationEmail);
   }, [inputEmail, inputPassword]); // eslint-disable-line
 
-  console.log(disableButton);
+  const setLocalStorege = () => {
+    console.log('oi');
+    localStorage.setItem('user', JSON.stringify({ email: inputEmail }));
+    localStorage.setItem('mealsToken', JSON.stringify(1));
+    localStorage.setItem('drinksToken', JSON.stringify(1));
+  };
+
   return (
     <div>
       <label htmlFor="email-input">
@@ -43,6 +46,7 @@ function Login() {
         type="button"
         data-testid="login-submit-btn"
         disabled={ !disableButton }
+        onClick={ setLocalStorege }
       >
         Enter
       </button>
