@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 function Login() {
   const history = useHistory();
+
   const [disableButton, setDisableButton] = useState(true);
   const [inputEmail, setInputEmail] = useState('');
   const [inputPassword, setInputPassword] = useState('');
@@ -15,7 +16,7 @@ function Login() {
     setDisableButton(validationLengthInputs && validationEmail);
   }, [inputEmail, inputPassword]);
 
-  const setLocalStorege = () => {
+  const setLocalStorage = () => {
     localStorage.setItem('user', JSON.stringify({ email: inputEmail }));
     localStorage.setItem('mealsToken', JSON.stringify(1));
     localStorage.setItem('drinksToken', JSON.stringify(1));
@@ -48,7 +49,7 @@ function Login() {
         type="button"
         data-testid="login-submit-btn"
         disabled={ !disableButton }
-        onClick={ setLocalStorege }
+        onClick={ setLocalStorage }
       >
         Enter
       </button>

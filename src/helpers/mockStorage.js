@@ -1,3 +1,3 @@
-const mockStorage = { email:
-    'test@test.com' };
+const mockStorage = {
+  email: 'test@test.com' };
 export default mockStorage;
