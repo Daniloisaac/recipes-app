@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 function Login() {
+  const history = useHistory();
   const [disableButton, setDisableButton] = useState(true);
   const [inputEmail, setInputEmail] = useState('');
   const [inputPassword, setInputPassword] = useState('');
@@ -11,13 +13,13 @@ function Login() {
     && inputPassword.length > numberValidation;
     const validationEmail = inputEmail.includes('@') && inputEmail.includes('.com');
     setDisableButton(validationLengthInputs && validationEmail);
-  }, [inputEmail, inputPassword]); // eslint-disable-line
+  }, [inputEmail, inputPassword]);
 
   const setLocalStorege = () => {
-    console.log('oi');
     localStorage.setItem('user', JSON.stringify({ email: inputEmail }));
     localStorage.setItem('mealsToken', JSON.stringify(1));
     localStorage.setItem('drinksToken', JSON.stringify(1));
+    history.push('/meals');
   };
 
   return (
