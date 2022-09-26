@@ -2,6 +2,10 @@ function SearchBar() {
   return (
     <div>
       <input
+        type="text"
+        data-testid="search-input"
+      />
+      <input
         type="radio"
         id="input_ingredient"
         name="ingredient"
