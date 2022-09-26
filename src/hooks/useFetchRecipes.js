@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 
 export default function useFetchRecipes(url) {
-  const [meals, setMeals] = useState({});
+  const [recipes, setRecipes] = useState({});
 
   useEffect(() => {
     fetch(url)
       .then((response) => response.json())
-      .then((data) => setMeals(data));
+      .then((data) => setRecipes(data));
   }, [url]);
 
-  return meals;
+  return recipes;
 }
