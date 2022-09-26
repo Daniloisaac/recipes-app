@@ -1,6 +1,7 @@
 import React from 'react';
 import CardRecipes from '../components/CardRecipes';
 import Footer from '../components/Footer';
+import Header from '../components/Header';
 import useFetchRecipes from '../hooks/useFetchRecipes';
 
 function Drinks() {
@@ -9,6 +10,10 @@ function Drinks() {
 
   return (
     <div className="meals">
+      <Header
+        title="Drinks"
+        search
+      />
       {drinks && Object.keys(drinks).map((key, index) => (
         index < MAX_DRINKS ? (
           <CardRecipes
