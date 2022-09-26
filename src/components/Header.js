@@ -26,7 +26,6 @@ function Header({ title, search }) {
             onClick={ () => setIsVisible(!isVisible) }
           />
         </div>
-        // <img data-testid="search-top-btn" src={ searchIcon } alt="searchIcon" />
       )}
       </header>
       { isVisible && <SearchBar /> }
