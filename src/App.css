@@ -10,6 +10,11 @@
   width: 100%;
 }
 
+.meals img {
+  height: 60px;
+  width: 60px;
+}
+
 .rocksGlass {
   animation: shake 1s infinite ease;
   max-height: 80vh;
