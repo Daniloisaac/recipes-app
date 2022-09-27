@@ -9,36 +9,40 @@ import meals from '../../cypress/mocks/meals';
 import mealsCategory from '../../cypress/mocks/mealCategories';
 
 const checkButtons = (buttons) => {
-  buttons.then((btn) => {
-    expect(btn).toHaveLength(5);
-    btn.forEach((button) => {
-      expect(button).toBeInTheDocument();
-    });
+  expect(buttons).toHaveLength(5);
+  buttons.forEach((button) => {
+    expect(button).toBeInTheDocument();
   });
 };
 
 describe('Testando a rota meals', () => {
-  beforeEach(() => {
-    global.fetch = jest.fn().mockResolvedValue({
-      json: () => Promise.resolve(drinks),
+  // beforeEach(() => {
+  //   global.fetch = jest.fn().mockResolvedValue({
+  //     json: () => Promise.resolve(drinks),
+  //   });
+
+  //   global.fetch = jest.fn().mockResolvedValue({
+  //     json: () => Promise.resolve(meals),
+  //   });
+
+  //   global.fetch = jest.fn().mockResolvedValue({
+  //     json: () => Promise.resolve(mealsCategory),
+  //   });
+  // });
+
+  it('Testando se os botões de categoria estão na tela', async () => {
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(drinks),
     });
 
-    global.fetch = jest.fn().mockResolvedValue({
-      json: () => Promise.resolve(drinkCategory),
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(drinkCategory),
     });
 
-    global.fetch = jest.fn().mockResolvedValue({
-      json: () => Promise.resolve(meals),
-    });
-
-    global.fetch = jest.fn().mockResolvedValue({
-      json: () => Promise.resolve(mealsCategory),
-    });
-  });
-
-  it('Testando se os botões de categoria estão na tela', () => {
     renderWithRouter(<Drinks />);
-    const buttons = screen.findAllByRole('button');
+    const buttons = await screen.findAllByRole('button');
     checkButtons(buttons);
   });
 
@@ -47,15 +51,28 @@ describe('Testando a rota meals', () => {
     global.fetch.mockResolvedValue({
       json: jest.fn().mockResolvedValue(drinks),
     });
+
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(drinkCategory),
+    });
     renderWithRouter(<Drinks />);
 
     const image = await screen.findByTestId('2-recipe-card');
     expect(image).toBeInTheDocument();
   });
 
-  it('Testando se os botões de categoria estão na tela', () => {
+  it('Testando se os botões de categoria estão na tela', async () => {
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(meals),
+    });
+
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(mealsCategory),
+    });
     renderWithRouter(<Meals />);
-    const buttons = screen.findAllByRole('button');
+    const buttons = await screen.findAllByRole('button');
     checkButtons(buttons);
   });
 
@@ -63,6 +80,10 @@ describe('Testando a rota meals', () => {
     jest.spyOn(global, 'fetch');
     global.fetch.mockResolvedValue({
       json: jest.fn().mockResolvedValue(meals),
+    });
+
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(mealsCategory),
     });
     renderWithRouter(<Meals />);
 
