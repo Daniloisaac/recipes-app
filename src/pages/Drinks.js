@@ -5,8 +5,6 @@ import AppContext from '../context/AppContext';
 import fetchRecipes from '../services';
 import Header from '../components/Header';
 
-
-
 function Drinks() {
   const {
     setRecipes,
@@ -24,14 +22,14 @@ function Drinks() {
   }, [setRecipeCategories, setRecipes]);
 
   return (
-    <div className="meals">   
+    <div className="meals">
 
       <Header
         title="Drinks"
         search
       />
-      
-       <Recipes
+
+      <Recipes
         nameRecipe="Drink"
       />
 

@@ -5,8 +5,6 @@ import AppContext from '../context/AppContext';
 import fetchRecipes from '../services';
 import Header from '../components/Header';
 
-
-
 function Meals() {
   const {
     setRecipes,
@@ -29,7 +27,7 @@ function Meals() {
         title="Meals"
         search
       />
-       <Recipes
+      <Recipes
         nameRecipe="Meal"
       />
       <Footer />
