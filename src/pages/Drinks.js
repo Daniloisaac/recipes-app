@@ -3,6 +3,9 @@ import Footer from '../components/Footer';
 import Recipes from '../components/Recipes';
 import AppContext from '../context/AppContext';
 import fetchRecipes from '../services';
+import Header from '../components/Header';
+
+
 
 function Drinks() {
   const {
@@ -21,8 +24,14 @@ function Drinks() {
   }, [setRecipeCategories, setRecipes]);
 
   return (
-    <div className="meals">
-      <Recipes
+    <div className="meals">   
+
+      <Header
+        title="Drinks"
+        search
+      />
+      
+       <Recipes
         nameRecipe="Drink"
       />
 

@@ -3,6 +3,9 @@ import Footer from '../components/Footer';
 import Recipes from '../components/Recipes';
 import AppContext from '../context/AppContext';
 import fetchRecipes from '../services';
+import Header from '../components/Header';
+
+
 
 function Meals() {
   const {
@@ -22,7 +25,11 @@ function Meals() {
 
   return (
     <div className="meals">
-      <Recipes
+      <Header
+        title="Meals"
+        search
+      />
+       <Recipes
         nameRecipe="Meal"
       />
       <Footer />
