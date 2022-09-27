@@ -1,29 +1,38 @@
-import React from 'react';
-import CardRecipes from '../components/CardRecipes';
+import React, { useContext, useEffect } from 'react';
 import Footer from '../components/Footer';
+import Recipes from '../components/Recipes';
+import AppContext from '../context/AppContext';
+import fetchRecipes from '../services';
 import Header from '../components/Header';
-import useFetchRecipes from '../hooks/useFetchRecipes';
 
 function Drinks() {
-  const { drinks } = useFetchRecipes('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
-  const MAX_DRINKS = 12;
+  const {
+    setRecipes,
+    setRecipeCategories,
+  } = useContext(AppContext);
+
+  useEffect(() => {
+    const getRecipes = async () => {
+      const drinks = await fetchRecipes('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
+      const categories = await fetchRecipes('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
+      setRecipes(drinks);
+      setRecipeCategories(categories);
+    };
+    getRecipes();
+  }, [setRecipeCategories, setRecipes]);
 
   return (
     <div className="meals">
+
       <Header
         title="Drinks"
         search
       />
-      {drinks && Object.keys(drinks).map((key, index) => (
-        index < MAX_DRINKS ? (
-          <CardRecipes
-            key={ drinks[key].idDrink }
-            name={ drinks[key].strDrink }
-            image={ drinks[key].strDrinkThumb }
-            index={ index }
-          />
-        ) : ''
-      ))}
+
+      <Recipes
+        nameRecipe="Drink"
+      />
+
       <Footer />
     </div>
   );

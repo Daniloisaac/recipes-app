@@ -1,12 +1,25 @@
-import React from 'react';
-import CardRecipes from '../components/CardRecipes';
+import React, { useContext, useEffect } from 'react';
 import Footer from '../components/Footer';
+import Recipes from '../components/Recipes';
+import AppContext from '../context/AppContext';
+import fetchRecipes from '../services';
 import Header from '../components/Header';
-import useFetchRecipes from '../hooks/useFetchRecipes';
 
 function Meals() {
-  const { meals } = useFetchRecipes('https://www.themealdb.com/api/json/v1/1/search.php?s=');
-  const MAX_MEALS = 12;
+  const {
+    setRecipes,
+    setRecipeCategories,
+  } = useContext(AppContext);
+
+  useEffect(() => {
+    const getRecipes = async () => {
+      const drinks = await fetchRecipes('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+      const categories = await fetchRecipes('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
+      setRecipes(drinks);
+      setRecipeCategories(categories);
+    };
+    getRecipes();
+  }, [setRecipeCategories, setRecipes]);
 
   return (
     <div className="meals">
@@ -14,14 +27,9 @@ function Meals() {
         title="Meals"
         search
       />
-      {meals && Object.keys(meals).map((key, index) => (
-        index < MAX_MEALS ? <CardRecipes
-          key={ meals[key].idMeal }
-          name={ meals[key].strMeal }
-          image={ meals[key].strMealThumb }
-          index={ index }
-        /> : ''
-      ))}
+      <Recipes
+        nameRecipe="Meal"
+      />
       <Footer />
     </div>
   );

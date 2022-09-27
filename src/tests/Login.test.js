@@ -9,7 +9,7 @@ const emailOfUser = 'test@test.com';
 const passwordOfUser = '1234567';
 
 describe('testando a page "Login"', () => {
-  test('testando se o usuario consegue escrever nos inputs', () => {
+  test('testando se o usuário consegue escrever nos inputs', () => {
     renderWithRouter(<App />);
 
     const inputEmail = screen.getByTestId('email-input');
@@ -22,7 +22,7 @@ describe('testando a page "Login"', () => {
     expect(inputPassword.value).toBe(passwordOfUser);
   });
   test(
-    'testando se quando o usuario clica no botão as informações dele é salva no local storage',
+    'testando se quando o usuário clica no botão as informações dele é salva no local storage',
     () => {
       renderWithRouter(<App />);
 

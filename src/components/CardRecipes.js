@@ -10,7 +10,12 @@ export default function CardRecipes({ name, image, index }) {
 }
 
 CardRecipes.propTypes = {
-  name: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
+  name: PropTypes.string,
+  image: PropTypes.string,
   index: PropTypes.number.isRequired,
+};
+
+CardRecipes.defaultProps = {
+  name: '',
+  image: '',
 };

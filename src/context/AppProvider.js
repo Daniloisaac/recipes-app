@@ -1,16 +1,21 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import AppContext from './AppContext';
 
 function AppProvider({ children }) {
-  const contextValue = 'teste';
+  const [recipes, setRecipes] = useState([]);
+  const [recipeCategories, setRecipeCategories] = useState([]);
+  const context = useMemo(() => ({
+    recipes,
+    setRecipes,
+    recipeCategories,
+    setRecipeCategories,
+  }), [recipes, recipeCategories]);
 
   return (
-    <div>
-      <AppContext.Provider value={ contextValue }>
-        {children}
-      </AppContext.Provider>
-    </div>
+    <AppContext.Provider value={ context }>
+      {children}
+    </AppContext.Provider>
   );
 }
 
