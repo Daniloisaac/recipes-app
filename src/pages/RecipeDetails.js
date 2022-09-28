@@ -1,5 +1,5 @@
 export default function RecipeDetails() {
   return (
-    <h1>Recipe Details</h1>
+    <h1>Recipee Details</h1>
   );
 }
