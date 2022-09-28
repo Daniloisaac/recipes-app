@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 import AppContext from '../context/AppContext';
 import ButtonsCategory from './ButtonsCategory';
 import CardRecipes from './CardRecipes';
@@ -27,7 +27,7 @@ export default function Recipes({ nameRecipe }) {
           categoryName="All"
         />
       </div>
-      {recipes.length > 0 && recipes.map((recipe, index) => (
+      {recipes.length > 1 && recipes.map((recipe, index) => (
         index < MAX_RECIPES ? (
           <Link
             key={ recipe[`id${nameRecipe}`] }
@@ -41,6 +41,9 @@ export default function Recipes({ nameRecipe }) {
           </Link>
         ) : ''
       ))}
+
+      {recipes.length === 1
+      && <Redirect to={ `${path}/${recipes[0][`id${nameRecipe}`]}` } />}
 
     </>
   );

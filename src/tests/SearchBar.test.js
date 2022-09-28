@@ -2,10 +2,38 @@ import React from 'react';
 import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Drinks from '../pages/Drinks';
+import Meals from '../pages/Meals';
 import renderWithRouter from '../helpers/renderWithRouter';
+import { checkLengthRequisition } from '../components/SearchBar';
+import mockMargarita from './__mocks__/getByNameMargarita.json';
 
 describe('Testando o componente SearchBar', () => {
-  it('Testando os Inputs', () => {
+  it('', () => {
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue([]),
+    });
+    renderWithRouter(<Meals />);
+    const iconSearch = screen.getByTestId('search-top-btn');
+    expect(iconSearch).toBeInTheDocument();
+
+    userEvent.click(iconSearch);
+    const searchInput = screen.getByTestId('search-input');
+    const inputFirstLetter = screen.getByLabelText(/first letter/i);
+    const buttonSearch = screen.getByTestId('exec-search-btn');
+    expect(buttonSearch).toBeInTheDocument();
+
+    fireEvent.change(searchInput, { target: { value: '' } });
+    expect(searchInput).toHaveDisplayValue('');
+    userEvent.click(inputFirstLetter);
+    userEvent.click(buttonSearch);
+  });
+
+  it('Testando os Inputs', async () => {
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(mockMargarita),
+    });
     renderWithRouter(<Drinks />);
     const iconSearch = screen.getByTestId('search-top-btn');
     expect(iconSearch).toBeInTheDocument();
@@ -42,8 +70,8 @@ describe('Testando o componente SearchBar', () => {
     userEvent.click(inputFirstLetter);
     userEvent.click(buttonSearch);
 
-    fireEvent.change(searchInput, { target: { value: 'asss' } });
-    expect(searchInput).toHaveDisplayValue('asss');
+    fireEvent.change(searchInput, { target: { value: '' } });
+    expect(searchInput).toHaveDisplayValue('');
     userEvent.click(inputFirstLetter);
     userEvent.click(buttonSearch);
 
@@ -56,5 +84,15 @@ describe('Testando o componente SearchBar', () => {
     expect(searchInput).toHaveDisplayValue('');
     userEvent.click(inputName);
     userEvent.click(buttonSearch);
+
+    fireEvent.change(searchInput, { target: { value: 'xablau' } });
+    expect(searchInput).toHaveDisplayValue('xablau');
+    userEvent.click(inputName);
+    userEvent.click(buttonSearch);
+
+    jest.spyOn(global, 'alert')
+      .mockReturnValue('Sorry, we haven\'t found any recipes for these filters.');
+    expect(checkLengthRequisition(null, () => {})).toEqual();
+    expect(checkLengthRequisition([{}, {}], () => {})).toEqual();
   });
 });

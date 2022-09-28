@@ -3,7 +3,19 @@ import { useHistory } from 'react-router-dom';
 import AppContext from '../context/AppContext';
 import fetchRecipes from '../services';
 
-function SearchBar() {
+export const alert = (string) => {
+  global.alert(string);
+};
+
+export function checkLengthRequisition(data, setRecipes) {
+  if (!data) {
+    alert('Sorry, we haven\'t found any recipes for these filters.');
+  } else {
+    setRecipes(data);
+  }
+}
+
+export function SearchBar() {
   const [searchRadio, setSearchRadio] = useState('');
   const [searchInput, setSearchInput] = useState('');
   const { setRecipes } = useContext(AppContext);
@@ -15,15 +27,17 @@ function SearchBar() {
     return URL;
   };
 
-  const handleClick = async () => {
+  const handleClick = () => {
     switch (searchRadio) {
     case 'ingredient':
       if (searchInput !== '') {
         const urlMeals = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchInput}`;
         const urlDrin = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${searchInput}`;
         const URL = verifyPath(urlMeals, urlDrin);
-        const data = await fetchRecipes(URL);
-        setRecipes(data);
+        fetchRecipes(URL)
+          .then((data) => {
+            checkLengthRequisition(data, setRecipes);
+          });
       }
       break;
     case 'first letter':
@@ -31,10 +45,11 @@ function SearchBar() {
         const urlMeals = `https://www.themealdb.com/api/json/v1/1/search.php?f=${searchInput}`;
         const urlDrin = `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${searchInput}`;
         const URL = verifyPath(urlMeals, urlDrin);
-        const data = await fetchRecipes(URL);
-        setRecipes(data);
+        fetchRecipes(URL).then((data) => {
+          checkLengthRequisition(data, setRecipes);
+        });
       } else {
-        global.alert('Your search must have only 1 (one) character');
+        alert('Your search must have only 1 (one) character');
       }
       break;
     case 'name':
@@ -42,8 +57,9 @@ function SearchBar() {
         const urlMeals = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchInput}`;
         const urlDrin = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchInput}`;
         const URL = verifyPath(urlMeals, urlDrin);
-        const data = await fetchRecipes(URL);
-        setRecipes(data);
+        fetchRecipes(URL).then((data) => {
+          checkLengthRequisition(data, setRecipes);
+        });
       }
       break;
     default:
@@ -102,5 +118,3 @@ function SearchBar() {
     </div>
   );
 }
-
-export default SearchBar;
