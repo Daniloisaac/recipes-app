@@ -8,7 +8,7 @@ import { checkLengthRequisition } from '../components/SearchBar';
 import mockMargarita from './__mocks__/getByNameMargarita.json';
 
 describe('Testando o componente SearchBar', () => {
-  it('', () => {
+  it('Testando o First Letter', () => {
     jest.spyOn(global, 'fetch');
     global.fetch.mockResolvedValue({
       json: jest.fn().mockResolvedValue([]),
