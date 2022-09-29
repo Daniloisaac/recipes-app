@@ -64,7 +64,7 @@ export default function RecipeDetails(idRecipes) {
 
   // localStorage.setItem('doneRecipes', JSON.stringify([{
   //   id,
-  //   type: 'meal',
+  //   type: 'mel',
   //   nationality: '',
   //   category: '',
   //   alcoholicOrNot: '',
