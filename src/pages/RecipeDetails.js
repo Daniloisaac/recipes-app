@@ -10,6 +10,8 @@ import '../styles/RecipeDetails.css';
 
 export default function RecipeDetails(idRecipes) {
   const [recipes, setRecipes] = useState([{}]);
+  const [accompaniment, setAccompaniment] = useState([{}]);
+
   const history = useHistory();
   const path = history.location.pathname;
   const { match: { params: { id } } } = idRecipes;
@@ -17,12 +19,18 @@ export default function RecipeDetails(idRecipes) {
     const getRecipes = async () => {
       if (path.includes('meals')) {
         const
-          meals = await fetchRecipes(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${'52771'}`);
+          meals = await fetchRecipes(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
+        const
+          drink = await fetchRecipes('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
         setRecipes(meals);
+        setAccompaniment(drink);
       } else if (path.includes('drinks')) {
         const
           drinks = await fetchRecipes(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
+        const
+          meals = await fetchRecipes('https://www.themealdb.com/api/json/v1/1/search.php?s=');
         setRecipes(drinks);
+        setAccompaniment(meals);
       }
     };
     getRecipes();
@@ -52,7 +60,8 @@ export default function RecipeDetails(idRecipes) {
         strIngredient5, strIngredient6, strIngredient7, strIngredient8, strIngredient9,
         strIngredient10, strIngredient11, strIngredient12, strIngredient13];
     });
-  ingredients = ingredients.filter((ingredient) => ingredient !== null);
+  ingredients = ingredients
+    .filter((ingredient) => ingredient !== null);
 
   console.log(ingredients);
 
@@ -61,7 +70,7 @@ export default function RecipeDetails(idRecipes) {
       <h1>Recipe Details</h1>
       {recipes.map((recipe) => (
         <div key={ id }>
-          <span>{id}</span>
+          {/* <span>{id}</span> */}
           <img
             className="img-details"
             data-testid="recipe-photo"
