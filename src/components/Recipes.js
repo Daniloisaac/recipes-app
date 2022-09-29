@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import AppContext from '../context/AppContext';
-import ButtonsCategory from './ButtonsCategory';
 import CardRecipes from './CardRecipes';
+import ButtonsCategory from './ButtonsCategory';
 
 export default function Recipes({ nameRecipe }) {
   const { recipes, recipeCategories } = useContext(AppContext);
@@ -11,7 +11,6 @@ export default function Recipes({ nameRecipe }) {
   const path = history.location.pathname;
   const MAX_RECIPES = 12;
   const MAX_RECIPES_CATEGORY = 5;
-
   return (
     <>
       <div className="categoryMeals">
