@@ -86,7 +86,6 @@ export default function RecipeDetails(idRecipes) {
 
   useEffect(() => {
     const recipesFinish = JSON.parse(localStorage.getItem('doneRecipes'));
-    // const recipesInProgress = JSON.parse(localStorage.getItem('inProgressRecipes'));
     if (recipesFinish) {
       const idTrue = recipesFinish.some((v) => v.id === id);
       setShowButton(!idTrue);
