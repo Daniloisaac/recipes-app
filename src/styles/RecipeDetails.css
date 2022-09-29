@@ -35,3 +35,8 @@ body::-webkit-scrollbar {
   text-align: center;
   width: 50%;
 }
+
+.button-start {
+  bottom: 0;
+  position: fixed;
+}
