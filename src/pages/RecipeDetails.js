@@ -3,15 +3,15 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import fetchRecipes from '../services';
 import '../styles/RecipeDetails.css';
-// import CardRecipes from '../components/CardRecipes';
-// import AppContext from '../context/AppContext';
-// import ButtonsCategory from './ButtonsCategory';
-// import CardRecipes from './CardRecipes';
 
 const MAX_NUMBERS_CARDS_ACCOMPANIMETS = 6;
+const startRecipe = 'Start Recipe';
+
 export default function RecipeDetails(idRecipes) {
   const [recipes, setRecipes] = useState([{}]);
   const [accompaniments, setaccompaniments] = useState([{}]);
+  const [showButton, setShowButton] = useState(true);
+  const [recipesInProgressButton, setRecipesInProgressButton] = useState(false);
 
   const history = useHistory();
   const path = history.location.pathname;
@@ -36,8 +36,6 @@ export default function RecipeDetails(idRecipes) {
     };
     getRecipes();
   }, [id]); // eslint-disable-line
-
-  console.log(accompaniments);
 
   let measures = [];
   recipes
@@ -64,8 +62,64 @@ export default function RecipeDetails(idRecipes) {
   ingredients = ingredients
     .filter((ingredient) => ingredient !== null);
 
-  console.log(ingredients);
+  // localStorage.setItem('doneRecipes', JSON.stringify([{
+  //   id,
+  //   type: 'mel',
+  //   nationality: '',
+  //   category: '',
+  //   alcoholicOrNot: '',
+  //   name: '',
+  //   image: '',
+  //   doneDate: '',
+  //   tags: '',
+  // }]));
+  // localStorage.setItem('inProgressRecipes', JSON.stringify(
+  //   {
+  //     drinks: {
+  //       [id]: ['lista-de-ingredientes-utilizados'],
+  //     },
+  //     meals: {
+  //       [id]: ['lista-de-ingredientes-utilizados'],
+  //     },
+  //   },
+  // ));
 
+  useEffect(() => {
+    const recipesFinish = JSON.parse(localStorage.getItem('doneRecipes'));
+    if (recipesFinish) {
+      const idTrue = recipesFinish.some((v) => v.id === id);
+      setShowButton(!idTrue);
+      // } else if (recipesInProgress) {
+      //   console.log('oi aqui ta certo');
+      //   // const mealsOrDrinks = path.includes('meals') ? 'meals' : 'drinks';
+      //   // recipesInProgress[mealsOrDrinks];
+      //   // const idTrue = recipesInProgress.some((v) => v.id === id);
+
+    //   setRecipesInProgressButton(true);
+    //   console.log(recipesInProgressButton);
+    }
+  }, []); // eslint-disable-line
+  const mealsOrDrinks = path.includes('meals') ? 'meals' : 'drinks';
+
+  useEffect(() => {
+    const recipesInProgress = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    if (recipesInProgress) {
+      setRecipesInProgressButton(true);
+      console.log(recipesInProgressButton);
+      // recipesInProgress[mealsOrDrinks];
+      // const idTrue = recipesInProgress.some((v) => v.id === id);
+    }
+  }, [recipesInProgressButton]); // eslint-disable-line
+  const goToRecipesInProgress = (nameOfButton) => {
+    if (nameOfButton === startRecipe) {
+      // console.log('deu certo');
+      // <Link
+      //   key={ recipe[`id${nameRecipe}`] }
+      //   to={ `${path}/${recipe[`id${nameRecipe}`]}` }
+      // />;
+      history.push(`/${mealsOrDrinks}/${id}/in-progress`);
+    }
+  };
   return (
     <div className="div-details">
       <h1>Recipe Details</h1>
@@ -150,13 +204,18 @@ export default function RecipeDetails(idRecipes) {
          )
         ))}
       </div>
-      <button
-        data-testid="start-recipe-btn"
-        className="button-start"
-        type="button"
-      >
-        Start Recipe
-      </button>
+      { showButton
+      && (
+        <button
+          data-testid="start-recipe-btn"
+          className="button-start"
+          type="button"
+          onClick={ () => goToRecipesInProgress(recipesInProgressButton
+            ? 'Continue Recipe' : startRecipe) }
+        >
+          { recipesInProgressButton ? 'Continue Recipe' : 'Start Recipe'}
+        </button>
+      )}
     </div>
   );
 }
