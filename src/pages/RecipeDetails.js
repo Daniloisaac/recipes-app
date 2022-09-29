@@ -150,7 +150,13 @@ export default function RecipeDetails(idRecipes) {
          )
         ))}
       </div>
-
+      <button
+        data-testid="start-recipe-btn"
+        className="button-start"
+        type="button"
+      >
+        Start Recipe
+      </button>
     </div>
   );
 }
