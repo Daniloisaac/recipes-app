@@ -1,3 +1,13 @@
+body {
+  -ms-overflow-style: none;  /* IE and Edge */
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
 .img-details {
   height: 40vw;
   width: 40vh;
@@ -7,3 +17,21 @@
   font-size: 1em;
 }
 
+.img-accompaniment {
+  height: 160px;
+  width: 160px;
+}
+
+.div-accompaniment {
+  display: flex;
+  gap: 10px;
+  overflow: auto;
+  width: 100vw;
+}
+
+.div-test {
+  display: flex;
+  height: 100%;
+  text-align: center;
+  width: 50%;
+}
