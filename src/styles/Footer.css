@@ -1,5 +1,7 @@
 .footer {
-  border: 2px solid red;
+  background-color: red;
+  border: 15px solid black;
   bottom: 0;
   position: fixed;
+  width: 100vw;
 }
