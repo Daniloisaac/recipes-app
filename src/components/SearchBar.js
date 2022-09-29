@@ -1,30 +1,32 @@
 import { useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import AppContext from '../context/AppContext';
 import fetchRecipes from '../services';
 
-export const alert = (string) => {
-  global.alert(string);
-};
-
-export function checkLengthRequisition(data, setRecipes) {
-  if (!data) {
-    alert('Sorry, we haven\'t found any recipes for these filters.');
-  } else {
-    setRecipes(data);
-  }
-}
-
-export function SearchBar() {
+export default function SearchBar() {
   const [searchRadio, setSearchRadio] = useState('');
   const [searchInput, setSearchInput] = useState('');
-  const { setRecipes } = useContext(AppContext);
+  const [isRedirect, setIsRedirect] = useState(false);
+  const { setRecipes, recipes } = useContext(AppContext);
   const history = useHistory();
+  const path = history.location.pathname;
+  const nameRecipe = path === '/meals' ? 'Meal' : 'Drink';
 
   const verifyPath = (urlMeals, urlDrink) => {
     const URL = history.location.pathname === '/meals'
       ? urlMeals : urlDrink;
     return URL;
+  };
+
+  const checkLengthRequisition = (data) => {
+    if (!data) {
+      global.alert('Sorry, we haven\'t found any recipes for these filters.');
+    } else if (data.length === 1) {
+      setRecipes(data);
+      setIsRedirect(true);
+    } else {
+      setRecipes(data);
+    }
   };
 
   const handleClick = () => {
@@ -36,7 +38,7 @@ export function SearchBar() {
         const URL = verifyPath(urlMeals, urlDrin);
         fetchRecipes(URL)
           .then((data) => {
-            checkLengthRequisition(data, setRecipes);
+            checkLengthRequisition(data);
           });
       }
       break;
@@ -46,10 +48,10 @@ export function SearchBar() {
         const urlDrin = `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${searchInput}`;
         const URL = verifyPath(urlMeals, urlDrin);
         fetchRecipes(URL).then((data) => {
-          checkLengthRequisition(data, setRecipes);
+          checkLengthRequisition(data);
         });
       } else {
-        alert('Your search must have only 1 (one) character');
+        global.alert('Your search must have only 1 (one) character');
       }
       break;
     case 'name':
@@ -58,7 +60,7 @@ export function SearchBar() {
         const urlDrin = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchInput}`;
         const URL = verifyPath(urlMeals, urlDrin);
         fetchRecipes(URL).then((data) => {
-          checkLengthRequisition(data, setRecipes);
+          checkLengthRequisition(data);
         });
       }
       break;
@@ -115,6 +117,7 @@ export function SearchBar() {
       >
         Buscar
       </button>
+      {isRedirect && <Redirect to={ `${path}/${recipes[0][`id${nameRecipe}`]}` } />}
     </div>
   );
 }
