@@ -8,9 +8,10 @@ import '../styles/RecipeDetails.css';
 // import ButtonsCategory from './ButtonsCategory';
 // import CardRecipes from './CardRecipes';
 
+const MAX_NUMBERS_CARDS_ACCOMPANIMETS = 6;
 export default function RecipeDetails(idRecipes) {
   const [recipes, setRecipes] = useState([{}]);
-  const [accompaniment, setAccompaniment] = useState([{}]);
+  const [accompaniments, setaccompaniments] = useState([{}]);
 
   const history = useHistory();
   const path = history.location.pathname;
@@ -23,20 +24,20 @@ export default function RecipeDetails(idRecipes) {
         const
           drink = await fetchRecipes('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
         setRecipes(meals);
-        setAccompaniment(drink);
+        setaccompaniments(drink);
       } else if (path.includes('drinks')) {
         const
           drinks = await fetchRecipes(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
         const
           meals = await fetchRecipes('https://www.themealdb.com/api/json/v1/1/search.php?s=');
         setRecipes(drinks);
-        setAccompaniment(meals);
+        setaccompaniments(meals);
       }
     };
     getRecipes();
   }, [id]); // eslint-disable-line
 
-  console.log(recipes);
+  console.log(accompaniments);
 
   let measures = [];
   recipes
@@ -66,7 +67,7 @@ export default function RecipeDetails(idRecipes) {
   console.log(ingredients);
 
   return (
-    <div>
+    <div className="div-details">
       <h1>Recipe Details</h1>
       {recipes.map((recipe) => (
         <div key={ id }>
@@ -124,6 +125,32 @@ export default function RecipeDetails(idRecipes) {
           />}
         </div>
       ))}
+      <div className="div-accompaniment">
+
+        {accompaniments.map((accompaniment, i) => (
+          i < MAX_NUMBERS_CARDS_ACCOMPANIMETS
+         && (
+           <div className="div-test">
+             {' '}
+             <img
+               className="img-accompaniment"
+               data-testid={ `${i}-recommendation-card` }
+               src={ path.includes('meals')
+                 ? accompaniment.strDrinkThumb : accompaniment.strMealThumb }
+               alt={ path.includes('meals')
+                 ? accompaniment.strDrink : accompaniment.strMeal }
+             />
+             <span
+               data-testid={ `${i}-recommendation-title` }
+             >
+               { path.includes('meals')
+                 ? accompaniment.strDrink : accompaniment.strMeal }
+             </span>
+           </div>
+         )
+        ))}
+      </div>
+
     </div>
   );
 }
