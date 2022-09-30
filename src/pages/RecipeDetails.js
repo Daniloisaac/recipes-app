@@ -3,15 +3,20 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import fetchRecipes from '../services';
 import '../styles/RecipeDetails.css';
+// import shareIcon from '../images/shareIcon.svg';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
+import ButtonCopy from '../components/ButtonCopy';
+import ButtonDoneRecipes from '../components/ButtonDoneRecipes';
 
 const MAX_NUMBERS_CARDS_ACCOMPANIMETS = 6;
-const startRecipe = 'Start Recipe';
+// const startRecipe = 'Start Recipe';
 
 export default function RecipeDetails(idRecipes) {
   const [recipes, setRecipes] = useState([{}]);
   const [accompaniments, setaccompaniments] = useState([{}]);
   const [showButton, setShowButton] = useState(true);
-  const [recipesInProgressButton, setRecipesInProgressButton] = useState(false);
+  const [heartBlack, setHeartBlack] = useState(false);
 
   const history = useHistory();
   const path = history.location.pathname;
@@ -89,43 +94,39 @@ export default function RecipeDetails(idRecipes) {
     if (recipesFinish) {
       const idTrue = recipesFinish.some((v) => v.id === id);
       setShowButton(!idTrue);
-      // } else if (recipesInProgress) {
-      //   console.log('oi aqui ta certo');
-      //   // const mealsOrDrinks = path.includes('meals') ? 'meals' : 'drinks';
-      //   // recipesInProgress[mealsOrDrinks];
-      //   // const idTrue = recipesInProgress.some((v) => v.id === id);
-
-    //   setRecipesInProgressButton(true);
-    //   console.log(recipesInProgressButton);
     }
   }, []); // eslint-disable-line
+
   const mealsOrDrinks = path.includes('meals') ? 'meals' : 'drinks';
 
-  useEffect(() => {
-    const recipesInProgress = JSON.parse(localStorage.getItem('inProgressRecipes'));
-    if (recipesInProgress) {
-      setRecipesInProgressButton(true);
-      console.log(recipesInProgressButton);
-      // recipesInProgress[mealsOrDrinks];
-      // const idTrue = recipesInProgress.some((v) => v.id === id);
-    }
-  }, [recipesInProgressButton]); // eslint-disable-line
-  const goToRecipesInProgress = (nameOfButton) => {
-    if (nameOfButton === startRecipe) {
-      // console.log('deu certo');
-      // <Link
-      //   key={ recipe[`id${nameRecipe}`] }
-      //   to={ `${path}/${recipe[`id${nameRecipe}`]}` }
-      // />;
-      history.push(`/${mealsOrDrinks}/${id}/in-progress`);
+  const setRecipesFavoritesInLocalStorage = (obj) => {
+    localStorage.setItem('favoriteRecipes', JSON.stringify([{ id,
+      type: obj.type,
+      nationality: obj.nationality,
+      category: obj.category,
+      alcoholicOrNot: obj.alcoholicOrNot,
+      name: obj.name,
+      image: obj.image }]));
+    if (obj.heart.includes(blackHeartIcon)) {
+      setHeartBlack(false);
+      localStorage.clear('favoriteRecipes');
+    } else if (obj.heart.includes(whiteHeartIcon)) {
+      setHeartBlack(true);
     }
   };
+  useEffect(() => {
+    const recipesFinish = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    if (recipesFinish) {
+      const idTrue = recipesFinish.some((v) => v.id === id);
+      setHeartBlack(idTrue);
+    }
+  }, [heartBlack]); // eslint-disable-line
+
   return (
     <div className="div-details">
       <h1>Recipe Details</h1>
       {recipes.map((recipe) => (
         <div key={ id }>
-          {/* <span>{id}</span> */}
           <img
             className="img-details"
             data-testid="recipe-photo"
@@ -206,16 +207,34 @@ export default function RecipeDetails(idRecipes) {
       </div>
       { showButton
       && (
-        <button
-          data-testid="start-recipe-btn"
-          className="button-start"
-          type="button"
-          onClick={ () => goToRecipesInProgress(recipesInProgressButton
-            ? 'Continue Recipe' : startRecipe) }
-        >
-          { recipesInProgressButton ? 'Continue Recipe' : 'Start Recipe'}
-        </button>
+        <ButtonDoneRecipes mealsOrDrinks={ mealsOrDrinks } id={ id } />
       )}
+      <ButtonCopy path={ path } />
+      {
+        recipes.map((recipe, i) => (
+          <button
+            key={ i }
+            data-testid="favorite-btn"
+            className="button-favorite"
+            type="button"
+            src={ heartBlack ? blackHeartIcon : whiteHeartIcon }
+            onClick={ () => setRecipesFavoritesInLocalStorage({
+              type: path.includes('meals') ? 'meal' : 'drink',
+              nationality: path.includes('meals') ? recipe.strArea : '',
+              category: recipe.strCategory,
+              alcoholicOrNot: path.includes('drinks') ? recipe.strAlcoholic : '',
+              name: path.includes('meals') ? recipe.strMeal : recipe.strDrink,
+              image: path.includes('meals') ? recipe.strMealThumb : recipe.strDrinkThumb,
+              heart: heartBlack ? blackHeartIcon : whiteHeartIcon,
+            }) }
+          >
+            <img
+              src={ heartBlack ? blackHeartIcon : whiteHeartIcon }
+              alt="heartIcon"
+            />
+          </button>
+        ))
+      }
     </div>
   );
 }
