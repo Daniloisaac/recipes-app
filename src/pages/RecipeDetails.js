@@ -108,9 +108,13 @@ export default function RecipeDetails(idRecipes) {
       alcoholicOrNot: obj.alcoholicOrNot,
       name: obj.name,
       image: obj.image }]));
-    // setHeartBlack(true);
+    if (obj.heart.includes(blackHeartIcon)) {
+      setHeartBlack(false);
+      localStorage.clear('favoriteRecipes');
+    } else if (obj.heart.includes(whiteHeartIcon)) {
+      setHeartBlack(true);
+    }
   };
-
   useEffect(() => {
     const recipesFinish = JSON.parse(localStorage.getItem('favoriteRecipes'));
     if (recipesFinish) {
@@ -124,7 +128,6 @@ export default function RecipeDetails(idRecipes) {
       <h1>Recipe Details</h1>
       {recipes.map((recipe) => (
         <div key={ id }>
-          {/* <span>{id}</span> */}
           <img
             className="img-details"
             data-testid="recipe-photo"
@@ -223,6 +226,7 @@ export default function RecipeDetails(idRecipes) {
               alcoholicOrNot: path.includes('drinks') ? recipe.strAlcoholic : '',
               name: path.includes('meals') ? recipe.strMeal : recipe.strDrink,
               image: path.includes('meals') ? recipe.strMealThumb : recipe.strDrinkThumb,
+              heart: heartBlack ? blackHeartIcon : whiteHeartIcon,
             }) }
           >
             <img
