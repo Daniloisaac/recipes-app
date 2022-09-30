@@ -31,9 +31,23 @@ function RecipeInProgress(idRecipes) {
     };
     getRecipes();
   }, []);
+  let ingredients = [];
+  recipes
+    .forEach(({ strIngredient1, strIngredient2,
+      strIngredient3, strIngredient4, strIngredient5, strIngredient6,
+      strIngredient7, strIngredient8, strIngredient9, strIngredient10, strIngredient11,
+      strIngredient12, strIngredient13 }) => {
+      ingredients = [strIngredient1, strIngredient2, strIngredient3, strIngredient4,
+        strIngredient5, strIngredient6, strIngredient7, strIngredient8, strIngredient9,
+        strIngredient10, strIngredient11, strIngredient12, strIngredient13];
+    });
+  ingredients = ingredients
+    .filter((ingredient) => ingredient !== null)
+    .filter((ingredient) => ingredient !== '');
+
   return (
     <div>
-      {recipes.map((recipe) => (
+      {recipes.map((recipe, index) => (
         <div key={ recipe.id }>
           <h1>In progress</h1>
           <img
@@ -45,9 +59,9 @@ function RecipeInProgress(idRecipes) {
             }
             alt={ path.includes('meals') ? recipe.strMeal : recipe.strDrink }
           />
-          <title data-testid="recipe-title">
+          <h1 data-testid="recipe-title">
             {path.includes('meals') ? recipe.strMeal : recipe.strDrink}
-          </title>
+          </h1>
           <button type="button" data-testid="share-btn">
             <img src={ shareIcon } alt="share button" />
           </button>
@@ -58,6 +72,16 @@ function RecipeInProgress(idRecipes) {
             {path.includes('meals') ? recipe.strCategory : recipe.strAlcoholic}
           </p>
           <p data-testid="instructions">{recipe.strInstructions}</p>
+          {ingredients.map((ingredient) => (
+            <label
+              htmlFor="input-checkbox"
+              key={ recipes.id }
+              data-testid={ `${index}-ingredient-step` }
+            >
+              <input className="input-checkbox" type="checkbox" />
+              {ingredient}
+            </label>
+          ))}
           <button type="button" data-testid="finish-recipe-btn">
             Finish
           </button>
