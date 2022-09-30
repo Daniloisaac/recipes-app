@@ -3,15 +3,19 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import fetchRecipes from '../services';
 import '../styles/RecipeDetails.css';
+import shareIcon from '../images/shareIcon.svg';
+import ButtonDoneRecipes from '../components/ButtonDoneRecipes';
 
 const MAX_NUMBERS_CARDS_ACCOMPANIMETS = 6;
-const startRecipe = 'Start Recipe';
+// const startRecipe = 'Start Recipe';
+const copy = require('clipboard-copy');
 
 export default function RecipeDetails(idRecipes) {
   const [recipes, setRecipes] = useState([{}]);
   const [accompaniments, setaccompaniments] = useState([{}]);
   const [showButton, setShowButton] = useState(true);
-  const [recipesInProgressButton, setRecipesInProgressButton] = useState(false);
+  // const [recipesInProgressButton, setRecipesInProgressButton] = useState(false);
+  const [alert, setAlert] = useState(false);
 
   const history = useHistory();
   const path = history.location.pathname;
@@ -89,40 +93,30 @@ export default function RecipeDetails(idRecipes) {
     if (recipesFinish) {
       const idTrue = recipesFinish.some((v) => v.id === id);
       setShowButton(!idTrue);
-      // } else if (recipesInProgress) {
-      //   console.log('oi aqui ta certo');
-      //   // const mealsOrDrinks = path.includes('meals') ? 'meals' : 'drinks';
-      //   // recipesInProgress[mealsOrDrinks];
-      //   // const idTrue = recipesInProgress.some((v) => v.id === id);
-
-    //   setRecipesInProgressButton(true);
-    //   console.log(recipesInProgressButton);
     }
   }, []); // eslint-disable-line
+
   const mealsOrDrinks = path.includes('meals') ? 'meals' : 'drinks';
 
-  useEffect(() => {
-    const recipesInProgress = JSON.parse(localStorage.getItem('inProgressRecipes'));
-    if (recipesInProgress) {
-      setRecipesInProgressButton(true);
-      console.log(recipesInProgressButton);
-      // recipesInProgress[mealsOrDrinks];
-      // const idTrue = recipesInProgress.some((v) => v.id === id);
-    }
-  }, [recipesInProgressButton]); // eslint-disable-line
-  const goToRecipesInProgress = (nameOfButton) => {
-    if (nameOfButton === startRecipe) {
-      // console.log('deu certo');
-      // <Link
-      //   key={ recipe[`id${nameRecipe}`] }
-      //   to={ `${path}/${recipe[`id${nameRecipe}`]}` }
-      // />;
-      history.push(`/${mealsOrDrinks}/${id}/in-progress`);
-    }
+  const setCopyOfLink = () => {
+    copy(`http://localhost:3000${path}`);
+    setAlert(true);
   };
+
+  const setRecipesFavoritesInLocalStorage = (obj) => {
+    localStorage.setItem('favoriteRecipes', JSON.stringify([{ id,
+      type: obj.type,
+      nationality: obj.nationality,
+      category: obj.category,
+      alcoholicOrNot: obj.alcoholicOrNot,
+      name: obj.name,
+      image: obj.image }]));
+  };
+
   return (
     <div className="div-details">
       <h1>Recipe Details</h1>
+      <div>{alert && 'Link copied!'}</div>
       {recipes.map((recipe) => (
         <div key={ id }>
           {/* <span>{id}</span> */}
@@ -206,31 +200,38 @@ export default function RecipeDetails(idRecipes) {
       </div>
       { showButton
       && (
-        <button
-          data-testid="start-recipe-btn"
-          className="button-start"
-          type="button"
-          onClick={ () => goToRecipesInProgress(recipesInProgressButton
-            ? 'Continue Recipe' : startRecipe) }
-        >
-          { recipesInProgressButton ? 'Continue Recipe' : 'Start Recipe'}
-        </button>
+        <ButtonDoneRecipes mealsOrDrinks={ mealsOrDrinks } id={ id } />
       )}
 
       <button
         data-testid="share-btn"
+        className="button-share"
         type="button"
+        onClick={ setCopyOfLink }
       >
         Compartilhar
-
+        <img src={ shareIcon } alt="shareIcon" />
       </button>
-      <button
-        data-testid="favorite-btn"
-        type="button"
-      >
-        Favoritar
-
-      </button>
+      {
+        recipes.map((recipe, i) => (
+          <button
+            key={ i }
+            data-testid="favorite-btn"
+            className="button-favorite"
+            type="button"
+            onClick={ () => setRecipesFavoritesInLocalStorage({
+              type: path.includes('meals') ? 'meal' : 'drink',
+              nationality: path.includes('meals') ? recipe.strArea : '',
+              category: recipe.strCategory,
+              alcoholicOrNot: path.includes('drinks') ? recipe.strAlcoholic : '',
+              name: path.includes('meals') ? recipe.strMeal : recipe.strDrink,
+              image: path.includes('meals') ? recipe.strMealThumb : recipe.strDrinkThumb,
+            }) }
+          >
+            Favoritar
+          </button>
+        ))
+      }
     </div>
   );
 }
