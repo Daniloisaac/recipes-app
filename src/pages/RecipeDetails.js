@@ -16,7 +16,6 @@ export default function RecipeDetails(idRecipes) {
   const [recipes, setRecipes] = useState([{}]);
   const [accompaniments, setaccompaniments] = useState([{}]);
   const [showButton, setShowButton] = useState(true);
-  // const [recipesInProgressButton, setRecipesInProgressButton] = useState(false);
   const [heartBlack, setHeartBlack] = useState(false);
 
   const history = useHistory();
