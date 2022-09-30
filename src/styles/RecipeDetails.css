@@ -52,3 +52,9 @@ body::-webkit-scrollbar {
   left: 140px;
   position: fixed;
 }
+
+.div-alert {
+  left: 280px;
+  position: fixed;
+  top: 30px;
+}

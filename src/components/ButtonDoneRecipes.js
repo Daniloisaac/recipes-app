@@ -30,7 +30,7 @@ function ButtonDoneRecipes(props) {
       onClick={ () => goToRecipesInProgress(recipesInProgressButton
         ? 'Continue Recipe' : startRecipe) }
     >
-      { recipesInProgressButton ? 'Continue Recipe' : startRecipe}
+      { recipesInProgressButton ? 'Continue Recipe' : startRecipe }
     </button>
   );
 }
