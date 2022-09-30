@@ -40,3 +40,15 @@ body::-webkit-scrollbar {
   bottom: 0;
   position: fixed;
 }
+
+.button-share {
+  bottom: 3px;
+  left: 240px;
+  position: fixed;
+}
+
+.button-favorite {
+  bottom: 3px;
+  left: 140px;
+  position: fixed;
+}
