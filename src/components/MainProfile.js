@@ -8,8 +8,10 @@ function MainProfile() {
   useEffect(() => {
     const getLocalStorage = () => {
       const user = localStorage.getItem('user');
-      const obj = JSON.parse(user);
-      setEmail(obj.email);
+      if (user) {
+        const obj = JSON.parse(user);
+        setEmail(obj.email);
+      }
     };
     getLocalStorage();
   }, []);
@@ -19,6 +21,7 @@ function MainProfile() {
   };
 
   const logout = () => {
+    console.log('entrou no logout');
     localStorage.clear();
     history.push('/');
   };
