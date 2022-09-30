@@ -3,19 +3,21 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import fetchRecipes from '../services';
 import '../styles/RecipeDetails.css';
-import shareIcon from '../images/shareIcon.svg';
+// import shareIcon from '../images/shareIcon.svg';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
+import ButtonCopy from '../components/ButtonCopy';
 import ButtonDoneRecipes from '../components/ButtonDoneRecipes';
 
 const MAX_NUMBERS_CARDS_ACCOMPANIMETS = 6;
 // const startRecipe = 'Start Recipe';
-const copy = require('clipboard-copy');
 
 export default function RecipeDetails(idRecipes) {
   const [recipes, setRecipes] = useState([{}]);
   const [accompaniments, setaccompaniments] = useState([{}]);
   const [showButton, setShowButton] = useState(true);
   // const [recipesInProgressButton, setRecipesInProgressButton] = useState(false);
-  const [alert, setAlert] = useState(false);
+  const [heartBlack, setHeartBlack] = useState(false);
 
   const history = useHistory();
   const path = history.location.pathname;
@@ -98,11 +100,6 @@ export default function RecipeDetails(idRecipes) {
 
   const mealsOrDrinks = path.includes('meals') ? 'meals' : 'drinks';
 
-  const setCopyOfLink = () => {
-    copy(`http://localhost:3000${path}`);
-    setAlert(true);
-  };
-
   const setRecipesFavoritesInLocalStorage = (obj) => {
     localStorage.setItem('favoriteRecipes', JSON.stringify([{ id,
       type: obj.type,
@@ -111,12 +108,20 @@ export default function RecipeDetails(idRecipes) {
       alcoholicOrNot: obj.alcoholicOrNot,
       name: obj.name,
       image: obj.image }]));
+    // setHeartBlack(true);
   };
+
+  useEffect(() => {
+    const recipesFinish = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    if (recipesFinish) {
+      const idTrue = recipesFinish.some((v) => v.id === id);
+      setHeartBlack(idTrue);
+    }
+  }, [heartBlack]); // eslint-disable-line
 
   return (
     <div className="div-details">
       <h1>Recipe Details</h1>
-      <div>{alert && 'Link copied!'}</div>
       {recipes.map((recipe) => (
         <div key={ id }>
           {/* <span>{id}</span> */}
@@ -202,16 +207,7 @@ export default function RecipeDetails(idRecipes) {
       && (
         <ButtonDoneRecipes mealsOrDrinks={ mealsOrDrinks } id={ id } />
       )}
-
-      <button
-        data-testid="share-btn"
-        className="button-share"
-        type="button"
-        onClick={ setCopyOfLink }
-      >
-        Compartilhar
-        <img src={ shareIcon } alt="shareIcon" />
-      </button>
+      <ButtonCopy path={ path } />
       {
         recipes.map((recipe, i) => (
           <button
@@ -219,6 +215,7 @@ export default function RecipeDetails(idRecipes) {
             data-testid="favorite-btn"
             className="button-favorite"
             type="button"
+            src={ heartBlack ? blackHeartIcon : whiteHeartIcon }
             onClick={ () => setRecipesFavoritesInLocalStorage({
               type: path.includes('meals') ? 'meal' : 'drink',
               nationality: path.includes('meals') ? recipe.strArea : '',
@@ -228,7 +225,10 @@ export default function RecipeDetails(idRecipes) {
               image: path.includes('meals') ? recipe.strMealThumb : recipe.strDrinkThumb,
             }) }
           >
-            Favoritar
+            <img
+              src={ heartBlack ? blackHeartIcon : whiteHeartIcon }
+              alt="heartIcon"
+            />
           </button>
         ))
       }

@@ -16,7 +16,7 @@ function ButtonDoneRecipes(props) {
     // recipesInProgress[mealsOrDrinks];
     // const idTrue = recipesInProgress.some((v) => v.id === id);
     }
-}, [recipesInProgressButton]); // eslint-disable-line
+  }, [recipesInProgressButton]); // eslint-disable-line
   const goToRecipesInProgress = (nameOfButton) => {
     if (nameOfButton === startRecipe) {
       history.push(`/${mealsOrDrinks}/${id}/in-progress`);
@@ -30,13 +30,13 @@ function ButtonDoneRecipes(props) {
       onClick={ () => goToRecipesInProgress(recipesInProgressButton
         ? 'Continue Recipe' : startRecipe) }
     >
-      { recipesInProgressButton ? 'Continue Recipe' : startRecipe}
+      { recipesInProgressButton ? 'Continue Recipe' : startRecipe }
     </button>
   );
 }
 ButtonDoneRecipes.propTypes = {
   mealsOrDrinks: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 export default ButtonDoneRecipes;
