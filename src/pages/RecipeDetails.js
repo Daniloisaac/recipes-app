@@ -4,6 +4,9 @@ import { useHistory } from 'react-router-dom';
 import fetchRecipes from '../services';
 import '../styles/RecipeDetails.css';
 import shareIcon from '../images/shareIcon.svg';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
+
 import ButtonDoneRecipes from '../components/ButtonDoneRecipes';
 
 const MAX_NUMBERS_CARDS_ACCOMPANIMETS = 6;
@@ -16,6 +19,7 @@ export default function RecipeDetails(idRecipes) {
   const [showButton, setShowButton] = useState(true);
   // const [recipesInProgressButton, setRecipesInProgressButton] = useState(false);
   const [alert, setAlert] = useState(false);
+  // const [heartBlack, setHeartBlack] = useState(false);
 
   const history = useHistory();
   const path = history.location.pathname;
@@ -112,6 +116,8 @@ export default function RecipeDetails(idRecipes) {
       name: obj.name,
       image: obj.image }]));
   };
+  const recipesFinish = JSON.parse(localStorage.getItem('favoriteRecipes'));
+  const idTrue = recipesFinish.some((v) => v.id === id);
 
   return (
     <div className="div-details">
@@ -229,6 +235,10 @@ export default function RecipeDetails(idRecipes) {
             }) }
           >
             Favoritar
+            <img
+              src={ idTrue ? blackHeartIcon : whiteHeartIcon }
+              alt="HeartIcon"
+            />
           </button>
         ))
       }
