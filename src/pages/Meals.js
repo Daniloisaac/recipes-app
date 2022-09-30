@@ -20,7 +20,7 @@ function Meals() {
     };
     getRecipes();
   }, [setRecipeCategories, setRecipes]);
-  
+
   return (
     <div className="meals">
       <Header
