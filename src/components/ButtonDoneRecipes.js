@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import '../styles/RecipeDetails.css';
 import PropTypes from 'prop-types';
+import style from '../styles/RecipeDetails.module.css';
 
 const startRecipe = 'Start Recipe';
 function ButtonDoneRecipes(props) {
@@ -25,7 +25,7 @@ function ButtonDoneRecipes(props) {
   return (
     <button
       data-testid="start-recipe-btn"
-      className="button-start"
+      className={ style.button_start }
       type="button"
       onClick={ () => goToRecipesInProgress(recipesInProgressButton
         ? 'Continue Recipe' : startRecipe) }

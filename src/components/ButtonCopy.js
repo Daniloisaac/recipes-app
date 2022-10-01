@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import '../styles/RecipeDetails.css';
 import PropTypes from 'prop-types';
+import style from '../styles/RecipeDetails.module.css';
+
 import shareIcon from '../images/shareIcon.svg';
 
 const copy = require('clipboard-copy');
@@ -16,10 +17,10 @@ function ButtonCopy(props) {
 
   return (
     <div>
-      <div className="div-alert">{alert && 'Link copied!'}</div>
+      <div className={ style.div_alert }>{alert && 'Link copied!'}</div>
       <button
         data-testid="share-btn"
-        className="button-share"
+        className={ style.button_share }
         type="button"
         onClick={ setCopyOfLink }
       >

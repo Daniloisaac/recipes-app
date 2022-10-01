@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import fetchRecipes from '../services';
-import '../styles/RecipeDetails.css';
+import style from '../styles/RecipeDetails.module.css';
 // import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
@@ -123,12 +123,12 @@ export default function RecipeDetails(idRecipes) {
   }, [heartBlack]); // eslint-disable-line
 
   return (
-    <div className="div-details">
+    <div className={ style.div_details }>
       <h1>Recipe Details</h1>
       {recipes.map((recipe) => (
         <div key={ id }>
           <img
-            className="img-details"
+            className={ style.img_details }
             data-testid="recipe-photo"
             src={ path.includes('meals') ? recipe.strMealThumb : recipe.strDrinkThumb }
             alt={ path.includes('meals') ? recipe.strMeal : recipe.strDrink }
@@ -165,7 +165,7 @@ export default function RecipeDetails(idRecipes) {
             ))}
           </ol>
           <h3
-            className="instructions"
+            className={ style.instructions }
             data-testid="instructions"
           >
             {recipe.strInstructions}
@@ -180,7 +180,7 @@ export default function RecipeDetails(idRecipes) {
           />}
         </div>
       ))}
-      <div className="div-accompaniment">
+      <div className={ style.div_accompaniment }>
 
         {accompaniments.map((accompaniment, i) => (
           i < MAX_NUMBERS_CARDS_ACCOMPANIMETS
@@ -188,7 +188,7 @@ export default function RecipeDetails(idRecipes) {
            <div className="div-test">
              {' '}
              <img
-               className="img-accompaniment"
+               className={ style.img_accompaniment }
                data-testid={ `${i}-recommendation-card` }
                src={ path.includes('meals')
                  ? accompaniment.strDrinkThumb : accompaniment.strMealThumb }
@@ -215,7 +215,7 @@ export default function RecipeDetails(idRecipes) {
           <button
             key={ i }
             data-testid="favorite-btn"
-            className="button-favorite"
+            className={ style.button_favorite }
             type="button"
             src={ heartBlack ? blackHeartIcon : whiteHeartIcon }
             onClick={ () => setRecipesFavoritesInLocalStorage({
