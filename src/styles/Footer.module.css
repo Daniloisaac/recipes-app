@@ -1,0 +1,24 @@
+.footer {
+  align-items: center;
+  background-color: #fafafa;
+  border-top: 3px solid white;
+  bottom: 0;
+  box-shadow: rgba(0, 0, 0, 0.35) 0 0.4px 9px;
+  display: flex;
+  height: 60px;
+  justify-content: center;
+  position: fixed;
+  width: 100vw;
+
+}
+
+.drink {
+  margin-right: 15px;
+  width: 56px;
+}
+
+.img_meals {
+  margin-left: 15px;
+  width: 56px;
+}
+
