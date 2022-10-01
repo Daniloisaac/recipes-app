@@ -5,12 +5,13 @@ import AppContext from './AppContext';
 function AppProvider({ children }) {
   const [recipes, setRecipes] = useState([]);
   const [recipeCategories, setRecipeCategories] = useState([]);
+
   const context = useMemo(() => ({
     recipes,
     setRecipes,
     recipeCategories,
     setRecipeCategories,
-  }), [recipes, recipeCategories]);
+  }), [recipes, recipeCategories]); // eslint-disable-line
 
   return (
     <AppContext.Provider value={ context }>

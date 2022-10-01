@@ -2,16 +2,21 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import fetchRecipes from '../services';
-import '../styles/RecipeDetails.css';
-// import CardRecipes from '../components/CardRecipes';
-// import AppContext from '../context/AppContext';
-// import ButtonsCategory from './ButtonsCategory';
-// import CardRecipes from './CardRecipes';
+import style from '../styles/RecipeDetails.module.css';
+// import shareIcon from '../images/shareIcon.svg';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
+import ButtonCopy from '../components/ButtonCopy';
+import ButtonDoneRecipes from '../components/ButtonDoneRecipes';
 
 const MAX_NUMBERS_CARDS_ACCOMPANIMETS = 6;
+// const startRecipe = 'Start Recipe';
+
 export default function RecipeDetails(idRecipes) {
   const [recipes, setRecipes] = useState([{}]);
   const [accompaniments, setaccompaniments] = useState([{}]);
+  const [showButton, setShowButton] = useState(true);
+  const [heartBlack, setHeartBlack] = useState(false);
 
   const history = useHistory();
   const path = history.location.pathname;
@@ -36,8 +41,6 @@ export default function RecipeDetails(idRecipes) {
     };
     getRecipes();
   }, [id]); // eslint-disable-line
-
-  console.log(accompaniments);
 
   let measures = [];
   recipes
@@ -64,16 +67,68 @@ export default function RecipeDetails(idRecipes) {
   ingredients = ingredients
     .filter((ingredient) => ingredient !== null);
 
-  console.log(ingredients);
+  // localStorage.setItem('doneRecipes', JSON.stringify([{
+  //   id,
+  //   type: 'mel',
+  //   nationality: '',
+  //   category: '',
+  //   alcoholicOrNot: '',
+  //   name: '',
+  //   image: '',
+  //   doneDate: '',
+  //   tags: '',
+  // }]));
+  // localStorage.setItem('inProgressRecipes', JSON.stringify(
+  //   {
+  //     drinks: {
+  //       [id]: ['lista-de-ingredientes-utilizados'],
+  //     },
+  //     meals: {
+  //       [id]: ['lista-de-ingredientes-utilizados'],
+  //     },
+  //   },
+  // ));
+
+  useEffect(() => {
+    const recipesFinish = JSON.parse(localStorage.getItem('doneRecipes'));
+    if (recipesFinish) {
+      const idTrue = recipesFinish.some((v) => v.id === id);
+      setShowButton(!idTrue);
+    }
+  }, []); // eslint-disable-line
+
+  const mealsOrDrinks = path.includes('meals') ? 'meals' : 'drinks';
+
+  const setRecipesFavoritesInLocalStorage = (obj) => {
+    localStorage.setItem('favoriteRecipes', JSON.stringify([{ id,
+      type: obj.type,
+      nationality: obj.nationality,
+      category: obj.category,
+      alcoholicOrNot: obj.alcoholicOrNot,
+      name: obj.name,
+      image: obj.image }]));
+    if (obj.heart.includes(blackHeartIcon)) {
+      setHeartBlack(false);
+      localStorage.clear('favoriteRecipes');
+    } else if (obj.heart.includes(whiteHeartIcon)) {
+      setHeartBlack(true);
+    }
+  };
+  useEffect(() => {
+    const recipesFinish = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    if (recipesFinish) {
+      const idTrue = recipesFinish.some((v) => v.id === id);
+      setHeartBlack(idTrue);
+    }
+  }, [heartBlack]); // eslint-disable-line
 
   return (
-    <div className="div-details">
+    <div className={ style.div_details }>
       <h1>Recipe Details</h1>
       {recipes.map((recipe) => (
         <div key={ id }>
-          {/* <span>{id}</span> */}
           <img
-            className="img-details"
+            className={ style.img_details }
             data-testid="recipe-photo"
             src={ path.includes('meals') ? recipe.strMealThumb : recipe.strDrinkThumb }
             alt={ path.includes('meals') ? recipe.strMeal : recipe.strDrink }
@@ -110,7 +165,7 @@ export default function RecipeDetails(idRecipes) {
             ))}
           </ol>
           <h3
-            className="instructions"
+            className={ style.instructions }
             data-testid="instructions"
           >
             {recipe.strInstructions}
@@ -125,7 +180,7 @@ export default function RecipeDetails(idRecipes) {
           />}
         </div>
       ))}
-      <div className="div-accompaniment">
+      <div className={ style.div_accompaniment }>
 
         {accompaniments.map((accompaniment, i) => (
           i < MAX_NUMBERS_CARDS_ACCOMPANIMETS
@@ -133,7 +188,7 @@ export default function RecipeDetails(idRecipes) {
            <div className="div-test">
              {' '}
              <img
-               className="img-accompaniment"
+               className={ style.img_accompaniment }
                data-testid={ `${i}-recommendation-card` }
                src={ path.includes('meals')
                  ? accompaniment.strDrinkThumb : accompaniment.strMealThumb }
@@ -150,13 +205,36 @@ export default function RecipeDetails(idRecipes) {
          )
         ))}
       </div>
-      <button
-        data-testid="start-recipe-btn"
-        className="button-start"
-        type="button"
-      >
-        Start Recipe
-      </button>
+      { showButton
+      && (
+        <ButtonDoneRecipes mealsOrDrinks={ mealsOrDrinks } id={ id } />
+      )}
+      <ButtonCopy path={ path } />
+      {
+        recipes.map((recipe, i) => (
+          <button
+            key={ i }
+            data-testid="favorite-btn"
+            className={ style.button_favorite }
+            type="button"
+            src={ heartBlack ? blackHeartIcon : whiteHeartIcon }
+            onClick={ () => setRecipesFavoritesInLocalStorage({
+              type: path.includes('meals') ? 'meal' : 'drink',
+              nationality: path.includes('meals') ? recipe.strArea : '',
+              category: recipe.strCategory,
+              alcoholicOrNot: path.includes('drinks') ? recipe.strAlcoholic : '',
+              name: path.includes('meals') ? recipe.strMeal : recipe.strDrink,
+              image: path.includes('meals') ? recipe.strMealThumb : recipe.strDrinkThumb,
+              heart: heartBlack ? blackHeartIcon : whiteHeartIcon,
+            }) }
+          >
+            <img
+              src={ heartBlack ? blackHeartIcon : whiteHeartIcon }
+              alt="heartIcon"
+            />
+          </button>
+        ))
+      }
     </div>
   );
 }

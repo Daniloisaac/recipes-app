@@ -17,9 +17,14 @@
   justify-self: center;
 }
 
-.meals img {
+.img_recipes {
   height: 100px;
   width: 100px;
+}
+
+.img_profile {
+  height: 60px;
+  width: 70px;
 }
 
 .rocksGlass {

@@ -12,7 +12,12 @@ function Header({ title, search }) {
       <header>
         <h1 data-testid="page-title">{ title }</h1>
         <Link to="/profile">
-          <img data-testid="profile-top-btn" src={ profileIcon } alt="profileIcon" />
+          <img
+            className="img_profile"
+            data-testid="profile-top-btn"
+            src={ profileIcon }
+            alt="profileIcon"
+          />
         </Link>
         { search
       && (
