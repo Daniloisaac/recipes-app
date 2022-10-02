@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import styles from '../styles/Login.module.css';
+import logo from '../images/logo.svg';
+import tomate from '../images/tomate.svg';
 
 function Login() {
   const history = useHistory();
@@ -24,35 +27,43 @@ function Login() {
   };
 
   return (
-    <div>
-      <label htmlFor="email-input">
-        Email:
-        <input
-          data-testid="email-input"
-          type="email"
-          name="email"
-          value={ inputEmail }
-          onChange={ ({ target }) => setInputEmail(target.value) }
-        />
-      </label>
-      <label htmlFor="password-input">
-        Senha:
-        <input
-          data-testid="password-input"
-          type="password"
-          name="password"
-          value={ inputPassword }
-          onChange={ ({ target }) => setInputPassword(target.value) }
-        />
-      </label>
-      <button
-        type="button"
-        data-testid="login-submit-btn"
-        disabled={ !disableButton }
-        onClick={ setLocalStorage }
-      >
-        Enter
-      </button>
+    <div className={ styles.container }>
+      <div className={ styles.containerImages }>
+        <img className={ styles.logotipo } src={ logo } alt="" />
+        <img className={ styles.tomate } src={ tomate } alt="" />
+      </div>
+
+      <div className={ styles.containerLogin }>
+        <h1 className={ styles.title }>Login</h1>
+        <label htmlFor="email-input">
+          <input
+            data-testid="email-input"
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={ inputEmail }
+            onChange={ ({ target }) => setInputEmail(target.value) }
+          />
+        </label>
+        <label htmlFor="password-input">
+          <input
+            data-testid="password-input"
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={ inputPassword }
+            onChange={ ({ target }) => setInputPassword(target.value) }
+          />
+        </label>
+        <button
+          type="button"
+          data-testid="login-submit-btn"
+          disabled={ !disableButton }
+          onClick={ setLocalStorage }
+        >
+          Enter
+        </button>
+      </div>
     </div>
   );
 }
