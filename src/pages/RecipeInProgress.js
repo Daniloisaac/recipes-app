@@ -7,7 +7,7 @@ import AppContext from '../context/AppContext';
 
 function RecipeInProgress(idRecipes) {
   const [recipes, setRecipes] = useState([{}]);
-  // const [ checkedBox, setCheckedBox ] = useState(true);
+  const [checkedBox, setCheckedBox] = useState(true);
   const history = useHistory();
   const path = history.location.pathname;
   const {
@@ -16,12 +16,14 @@ function RecipeInProgress(idRecipes) {
     },
   } = idRecipes;
 
-  // useEffect(() => {
-  //   setCheckedBox(false);
-  //   if (localStorage === recipesFinish) {
+  const recipesFinish = JSON.parse(localStorage.getItem('inProgressRecipes'));
 
-  //   }
-  // })
+  useEffect((ingredient) => {
+    setCheckedBox(false);
+    if (recipesFinish && recipesFinish.includes(ingredient)) {
+      setCheckedBox(true);
+    }
+  }, []);
 
   useEffect(() => {
     const getRecipes = async () => {
@@ -59,8 +61,6 @@ function RecipeInProgress(idRecipes) {
     arrayFood.push(param);
     localStorage.setItem('inProgressRecipes', JSON.stringify(arrayFood));
   };
-  const recipesFinish = JSON.parse(localStorage.getItem('inProgressRecipes'));
-
   const { setPathname } = useContext(AppContext);
   const hadleClick = () => {
     history.push('/done-recipes');
@@ -95,7 +95,7 @@ function RecipeInProgress(idRecipes) {
           </p>
           <p data-testid="instructions">{recipe.strInstructions}</p>
           <ol>
-            {ingredients.map((ingredient, index) => (
+            {ingredients.map((ingredient, index, item) => (
               <li key={ recipes.id }>
                 <label
                   htmlFor="input-checkbox"
@@ -105,8 +105,9 @@ function RecipeInProgress(idRecipes) {
                   <input
                     className="input-checkbox"
                     type="checkbox"
-                    checked={ recipesFinish && recipesFinish.includes(ingredient) }
-                    onClick={ () => (setIngredientsInLocalStorage(ingredient)) }
+                    name={ item }
+                    checked={ checkedBox }
+                    onChange={ () => (setIngredientsInLocalStorage(ingredient)) }
                   />
                   {ingredient}
                 </label>
