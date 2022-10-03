@@ -13,7 +13,6 @@ function RecipeInProgress(idRecipes) {
       params: { id },
     },
   } = idRecipes;
-  console.log(path.includes('drinks'));
   useEffect(() => {
     const getRecipes = async () => {
       if (path.includes('meals')) {
@@ -45,6 +44,13 @@ function RecipeInProgress(idRecipes) {
     .filter((ingredient) => ingredient !== null)
     .filter((ingredient) => ingredient !== '');
 
+  const setIngredientsInLocalStorage = (param) => {
+    localStorage.setItem('inProgressRecipes', JSON.stringify())
+    // const idTrue = recipesFinish.some((v) => v.id === id);
+    console.log(param)
+  }
+  // lógica de localStorage em processo 
+
   return (
     <div>
       {recipes.map((recipe, index) => (
@@ -72,16 +78,24 @@ function RecipeInProgress(idRecipes) {
             {path.includes('meals') ? recipe.strCategory : recipe.strAlcoholic}
           </p>
           <p data-testid="instructions">{recipe.strInstructions}</p>
-          {ingredients.map((ingredient) => (
-            <label
-              htmlFor="input-checkbox"
-              key={ recipes.id }
-              data-testid={ `${index}-ingredient-step` }
-            >
-              <input className="input-checkbox" type="checkbox" />
-              {ingredient}
-            </label>
+          <ol>
+            {ingredients.map((ingredient) => (
+              <li>
+                <label
+                  htmlFor="input-checkbox"
+                  key={ recipes.id }
+                  data-testid={ `${index}-ingredient-step` }
+                >
+                  <input 
+                    className="input-checkbox"
+                    type="checkbox"
+                    onClick={() => setIngredientsInLocalStorage(ingredient)}
+                  />
+                    {ingredient}
+                </label>
+            </li>
           ))}
+          </ol>
           <button type="button" data-testid="finish-recipe-btn">
             Finish
           </button>
