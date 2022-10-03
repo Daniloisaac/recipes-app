@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import fetchRecipes from '../services';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeart from '../images/whiteHeartIcon.svg';
+import AppContext from '../context/AppContext';
 
 function RecipeInProgress(idRecipes) {
   const [recipes, setRecipes] = useState([{}]);
+  const [checkedBox, setCheckedBox] = useState(true);
   const history = useHistory();
   const path = history.location.pathname;
   const {
@@ -13,6 +15,16 @@ function RecipeInProgress(idRecipes) {
       params: { id },
     },
   } = idRecipes;
+
+  const recipesFinish = JSON.parse(localStorage.getItem('inProgressRecipes'));
+
+  useEffect((ingredient) => {
+    setCheckedBox(false);
+    if (recipesFinish && recipesFinish.includes(ingredient)) {
+      setCheckedBox(true);
+    }
+  }, []);
+
   useEffect(() => {
     const getRecipes = async () => {
       if (path.includes('meals')) {
@@ -21,7 +33,7 @@ function RecipeInProgress(idRecipes) {
         );
         setRecipes(meals);
       } else if (path.includes('drinks')) {
-        console.log('drinks');
+        // console.log('drinks');
         const drinks = await fetchRecipes(
           `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`,
         );
@@ -44,12 +56,16 @@ function RecipeInProgress(idRecipes) {
     .filter((ingredient) => ingredient !== null)
     .filter((ingredient) => ingredient !== '');
 
+  const arrayFood = [];
   const setIngredientsInLocalStorage = (param) => {
-    localStorage.setItem('inProgressRecipes', JSON.stringify())
-    // const idTrue = recipesFinish.some((v) => v.id === id);
-    console.log(param)
-  }
-  // lógica de localStorage em processo 
+    arrayFood.push(param);
+    localStorage.setItem('inProgressRecipes', JSON.stringify(arrayFood));
+  };
+  const { setPathname } = useContext(AppContext);
+  const hadleClick = () => {
+    history.push('/done-recipes');
+    setPathname(path);
+  };
 
   const redirection = () => {
     history.push('/done-recipes');
@@ -58,7 +74,7 @@ function RecipeInProgress(idRecipes) {
 
   return (
     <div>
-      {recipes.map((recipe, index) => (
+      {recipes.map((recipe) => (
         <div key={ recipe.id }>
           <h1>In progress</h1>
           <img
@@ -84,25 +100,32 @@ function RecipeInProgress(idRecipes) {
           </p>
           <p data-testid="instructions">{recipe.strInstructions}</p>
           <ol>
-            {ingredients.map((ingredient) => (
-              <li>
+            {ingredients.map((ingredient, index, item) => (
+              <li key={ recipes.id }>
                 <label
                   htmlFor="input-checkbox"
                   key={ recipes.id }
                   data-testid={ `${index}-ingredient-step` }
                 >
-                  <input 
+                  <input
                     className="input-checkbox"
                     type="checkbox"
-                    onClick={() => setIngredientsInLocalStorage(ingredient)}
+                    name={ item }
+                    checked={ checkedBox }
+                    onChange={ () => (setIngredientsInLocalStorage(ingredient)) }
                   />
-                    {ingredient}
+                  {ingredient}
                 </label>
-            </li>
-          ))}
+              </li>
+            ))}
           </ol>
+<<<<<<< HEAD
           <button type="button" data-testid="finish-recipe-btn" onClick={ redirection }>
             Finish
+=======
+          <button type="button" data-testid="finish-recipe-btn" onClick={ hadleClick }>
+            Finish recipe
+>>>>>>> 494755f188e55216f0f0b4fd999e3fd0328e6d3f
           </button>
         </div>
       ))}
