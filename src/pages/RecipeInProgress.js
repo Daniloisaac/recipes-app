@@ -119,9 +119,7 @@ function RecipeInProgress(idRecipes) {
               </li>
             ))}
           </ol>
-<<<<<<< HEAD
-          <button type="button" data-testid="finish-recipe-btn" onClick={ redirection }>
-            Finish
+<<<<<<< 
 =======
           <button type="button" data-testid="finish-recipe-btn" onClick={ hadleClick }>
             Finish recipe
