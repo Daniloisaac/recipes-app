@@ -51,6 +51,11 @@ function RecipeInProgress(idRecipes) {
   }
   // lógica de localStorage em processo 
 
+  const redirection = () => {
+    history.push('/done-recipes');
+    
+  };
+
   return (
     <div>
       {recipes.map((recipe, index) => (
@@ -96,7 +101,7 @@ function RecipeInProgress(idRecipes) {
             </li>
           ))}
           </ol>
-          <button type="button" data-testid="finish-recipe-btn">
+          <button type="button" data-testid="finish-recipe-btn" onClick={ redirection }>
             Finish
           </button>
         </div>
