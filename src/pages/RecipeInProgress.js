@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import fetchRecipes from '../services';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeart from '../images/whiteHeartIcon.svg';
+import AppContext from '../context/AppContext';
 
 function RecipeInProgress(idRecipes) {
   const [recipes, setRecipes] = useState([{}]);
+  // const [ checkedBox, setCheckedBox ] = useState(true);
   const history = useHistory();
   const path = history.location.pathname;
   const {
@@ -13,6 +15,14 @@ function RecipeInProgress(idRecipes) {
       params: { id },
     },
   } = idRecipes;
+
+  // useEffect(() => {
+  //   setCheckedBox(false);
+  //   if (localStorage === recipesFinish) {
+
+  //   }
+  // })
+
   useEffect(() => {
     const getRecipes = async () => {
       if (path.includes('meals')) {
@@ -21,7 +31,7 @@ function RecipeInProgress(idRecipes) {
         );
         setRecipes(meals);
       } else if (path.includes('drinks')) {
-        console.log('drinks');
+        // console.log('drinks');
         const drinks = await fetchRecipes(
           `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`,
         );
@@ -44,16 +54,22 @@ function RecipeInProgress(idRecipes) {
     .filter((ingredient) => ingredient !== null)
     .filter((ingredient) => ingredient !== '');
 
+  const arrayFood = [];
   const setIngredientsInLocalStorage = (param) => {
-    localStorage.setItem('inProgressRecipes', JSON.stringify())
-    // const idTrue = recipesFinish.some((v) => v.id === id);
-    console.log(param)
-  }
-  // lógica de localStorage em processo 
+    arrayFood.push(param);
+    localStorage.setItem('inProgressRecipes', JSON.stringify(arrayFood));
+  };
+  const recipesFinish = JSON.parse(localStorage.getItem('inProgressRecipes'));
+
+  const { setPathname } = useContext(AppContext);
+  const hadleClick = () => {
+    history.push('/done-recipes');
+    setPathname(path);
+  };
 
   return (
     <div>
-      {recipes.map((recipe, index) => (
+      {recipes.map((recipe) => (
         <div key={ recipe.id }>
           <h1>In progress</h1>
           <img
@@ -79,25 +95,26 @@ function RecipeInProgress(idRecipes) {
           </p>
           <p data-testid="instructions">{recipe.strInstructions}</p>
           <ol>
-            {ingredients.map((ingredient) => (
-              <li>
+            {ingredients.map((ingredient, index) => (
+              <li key={ recipes.id }>
                 <label
                   htmlFor="input-checkbox"
                   key={ recipes.id }
                   data-testid={ `${index}-ingredient-step` }
                 >
-                  <input 
+                  <input
                     className="input-checkbox"
                     type="checkbox"
-                    onClick={() => setIngredientsInLocalStorage(ingredient)}
+                    checked={ recipesFinish && recipesFinish.includes(ingredient) }
+                    onClick={ () => (setIngredientsInLocalStorage(ingredient)) }
                   />
-                    {ingredient}
+                  {ingredient}
                 </label>
-            </li>
-          ))}
+              </li>
+            ))}
           </ol>
-          <button type="button" data-testid="finish-recipe-btn">
-            Finish
+          <button type="button" data-testid="finish-recipe-btn" onClick={ hadleClick }>
+            Finish recipe
           </button>
         </div>
       ))}

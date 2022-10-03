@@ -26,7 +26,6 @@ function App() {
           <Route exact path="/done-recipes" component={ DoneRecipes } />
           <Route exact path="/favorite-recipes" component={ FavoriteRecipes } />
           <Route exact path="/:recipes/:id/in-progress" component={ RecipeInProgress } />
-
         </Switch>
       </BrowserRouter>
     </AppProvider>
