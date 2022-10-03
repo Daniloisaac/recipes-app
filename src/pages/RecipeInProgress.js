@@ -66,11 +66,11 @@ function RecipeInProgress(idRecipes) {
     history.push('/done-recipes');
     setPathname(path);
   };
-
-  const redirection = () => {
-    history.push('/done-recipes');
-    
-  };
+  
+  
+  
+  
+  
 
   return (
     <div>
@@ -119,11 +119,8 @@ function RecipeInProgress(idRecipes) {
               </li>
             ))}
           </ol>
-<<<<<<< 
-=======
           <button type="button" data-testid="finish-recipe-btn" onClick={ hadleClick }>
             Finish recipe
->>>>>>> 494755f188e55216f0f0b4fd999e3fd0328e6d3f
           </button>
         </div>
       ))}
