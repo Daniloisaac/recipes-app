@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import fetchRecipes from '../services';
-import shareIcon from '../images/shareIcon.svg';
-import whiteHeart from '../images/whiteHeartIcon.svg';
 import AppContext from '../context/AppContext';
+import ButtonCopy from '../components/ButtonCopy';
+import ButtonFavorite from '../components/ButtonFavorite';
 
 function RecipeInProgress(idRecipes) {
+  // const [heartBlack, setHeartBlack] = useState(false);
   const [recipes, setRecipes] = useState([{}]);
   const [checkedBox, setCheckedBox] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(true);
   const history = useHistory();
   const path = history.location.pathname;
   const {
@@ -22,6 +24,7 @@ function RecipeInProgress(idRecipes) {
     setCheckedBox(false);
     if (recipesFinish && recipesFinish.includes(ingredient)) {
       setCheckedBox(true);
+      // *******refatorar para componente******
     }
   }, []);
 
@@ -33,7 +36,6 @@ function RecipeInProgress(idRecipes) {
         );
         setRecipes(meals);
       } else if (path.includes('drinks')) {
-        // console.log('drinks');
         const drinks = await fetchRecipes(
           `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`,
         );
@@ -43,15 +45,39 @@ function RecipeInProgress(idRecipes) {
     getRecipes();
   }, []);
   let ingredients = [];
-  recipes
-    .forEach(({ strIngredient1, strIngredient2,
-      strIngredient3, strIngredient4, strIngredient5, strIngredient6,
-      strIngredient7, strIngredient8, strIngredient9, strIngredient10, strIngredient11,
-      strIngredient12, strIngredient13 }) => {
-      ingredients = [strIngredient1, strIngredient2, strIngredient3, strIngredient4,
-        strIngredient5, strIngredient6, strIngredient7, strIngredient8, strIngredient9,
-        strIngredient10, strIngredient11, strIngredient12, strIngredient13];
-    });
+  recipes.forEach(
+    ({
+      strIngredient1,
+      strIngredient2,
+      strIngredient3,
+      strIngredient4,
+      strIngredient5,
+      strIngredient6,
+      strIngredient7,
+      strIngredient8,
+      strIngredient9,
+      strIngredient10,
+      strIngredient11,
+      strIngredient12,
+      strIngredient13,
+    }) => {
+      ingredients = [
+        strIngredient1,
+        strIngredient2,
+        strIngredient3,
+        strIngredient4,
+        strIngredient5,
+        strIngredient6,
+        strIngredient7,
+        strIngredient8,
+        strIngredient9,
+        strIngredient10,
+        strIngredient11,
+        strIngredient12,
+        strIngredient13,
+      ];
+    },
+  );
   ingredients = ingredients
     .filter((ingredient) => ingredient !== null)
     .filter((ingredient) => ingredient !== '');
@@ -60,18 +86,17 @@ function RecipeInProgress(idRecipes) {
   const setIngredientsInLocalStorage = (param) => {
     arrayFood.push(param);
     localStorage.setItem('inProgressRecipes', JSON.stringify(arrayFood));
+    setCheckedBox(true);
   };
+
   const { setPathname } = useContext(AppContext);
   const hadleClick = () => {
     history.push('/done-recipes');
     setPathname(path);
   };
+  const mealsOrDrink = path.includes('meals') ? 'meals' : 'drinks';
+  console.log(setIsDisabled);
   
-  
-  
-  
-  
-
   return (
     <div>
       {recipes.map((recipe) => (
@@ -89,12 +114,10 @@ function RecipeInProgress(idRecipes) {
           <h1 data-testid="recipe-title">
             {path.includes('meals') ? recipe.strMeal : recipe.strDrink}
           </h1>
-          <button type="button" data-testid="share-btn">
-            <img src={ shareIcon } alt="share button" />
-          </button>
-          <button type="button" data-testid="favorite-btn">
-            <img src={ whiteHeart } alt="Favorite button" />
-          </button>
+
+          <ButtonCopy path={ `/${mealsOrDrink}/${id}` } />
+          <ButtonFavorite path={ path } id={ id } />
+
           <p data-testid="recipe-category">
             {path.includes('meals') ? recipe.strCategory : recipe.strAlcoholic}
           </p>
@@ -112,14 +135,19 @@ function RecipeInProgress(idRecipes) {
                     type="checkbox"
                     name={ item }
                     checked={ checkedBox }
-                    onChange={ () => (setIngredientsInLocalStorage(ingredient)) }
+                    onChange={ () => setIngredientsInLocalStorage(ingredient) }
                   />
                   {ingredient}
                 </label>
               </li>
             ))}
           </ol>
-          <button type="button" data-testid="finish-recipe-btn" onClick={ hadleClick }>
+          <button
+            type="button"
+            data-testid="finish-recipe-btn"
+            onClick={ hadleClick }
+            disabled={ isDisabled }
+          >
             Finish recipe
           </button>
         </div>
