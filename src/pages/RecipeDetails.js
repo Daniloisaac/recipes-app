@@ -22,6 +22,7 @@ export default function RecipeDetails(idRecipes) {
   const history = useHistory();
   const path = history.location.pathname;
   const { match: { params: { id } } } = idRecipes;
+
   useEffect(() => {
     const getRecipes = async () => {
       if (path.includes('meals')) {
@@ -120,7 +121,7 @@ export default function RecipeDetails(idRecipes) {
             </div>
             <div className={ style.titleDetails }>
               <img
-                src={ path === 'meals' ? allComida : allBebida }
+                src={ mealsOrDrinks === 'meals' ? allComida : allBebida }
                 alt=""
               />
               <p
