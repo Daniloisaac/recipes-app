@@ -22,7 +22,7 @@ function Meals() {
   }, [setRecipeCategories, setRecipes]);
 
   return (
-    <div className="meals">
+    <>
       <Header
         title="Meals"
         search
@@ -31,7 +31,7 @@ function Meals() {
         nameRecipe="Meal"
       />
       <Footer />
-    </div>
+    </>
   );
 }
 

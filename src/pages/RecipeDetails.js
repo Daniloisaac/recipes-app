@@ -1,16 +1,17 @@
-// import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import fetchRecipes from '../services';
 import style from '../styles/RecipeDetails.module.css';
-// import shareIcon from '../images/shareIcon.svg';
-import whiteHeartIcon from '../images/whiteHeartIcon.svg';
-import blackHeartIcon from '../images/blackHeartIcon.svg';
-import ButtonCopy from '../components/ButtonCopy';
+// import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+// import blackHeartIcon from '../images/blackHeartIcon.svg';
+// import ButtonCopy from '../components/ButtonCopy';
 import ButtonDoneRecipes from '../components/ButtonDoneRecipes';
+import share from '../images/share.svg';
+import like from '../images/like.svg';
+import allComida from '../images/allComida.svg';
+import allBebida from '../images/allBebida.svg';
 
 const MAX_NUMBERS_CARDS_ACCOMPANIMETS = 6;
-// const startRecipe = 'Start Recipe';
 
 export default function RecipeDetails(idRecipes) {
   const [recipes, setRecipes] = useState([{}]);
@@ -40,7 +41,7 @@ export default function RecipeDetails(idRecipes) {
       }
     };
     getRecipes();
-  }, [id]); // eslint-disable-line
+  }, [id, path]);
 
   let measures = [];
   recipes
@@ -67,125 +68,133 @@ export default function RecipeDetails(idRecipes) {
   ingredients = ingredients
     .filter((ingredient) => ingredient !== null);
 
-  // localStorage.setItem('doneRecipes', JSON.stringify([{
-  //   id,
-  //   type: 'mel',
-  //   nationality: '',
-  //   category: '',
-  //   alcoholicOrNot: '',
-  //   name: '',
-  //   image: '',
-  //   doneDate: '',
-  //   tags: '',
-  // }]));
-  // localStorage.setItem('inProgressRecipes', JSON.stringify(
-  //   {
-  //     drinks: {
-  //       [id]: ['lista-de-ingredientes-utilizados'],
-  //     },
-  //     meals: {
-  //       [id]: ['lista-de-ingredientes-utilizados'],
-  //     },
-  //   },
-  // ));
-
   useEffect(() => {
     const recipesFinish = JSON.parse(localStorage.getItem('doneRecipes'));
     if (recipesFinish) {
       const idTrue = recipesFinish.some((v) => v.id === id);
       setShowButton(!idTrue);
     }
-  }, []); // eslint-disable-line
+  }, [id]);
 
   const mealsOrDrinks = path.includes('meals') ? 'meals' : 'drinks';
 
-  const setRecipesFavoritesInLocalStorage = (obj) => {
-    localStorage.setItem('favoriteRecipes', JSON.stringify([{ id,
-      type: obj.type,
-      nationality: obj.nationality,
-      category: obj.category,
-      alcoholicOrNot: obj.alcoholicOrNot,
-      name: obj.name,
-      image: obj.image }]));
-    if (obj.heart.includes(blackHeartIcon)) {
-      setHeartBlack(false);
-      localStorage.clear('favoriteRecipes');
-    } else if (obj.heart.includes(whiteHeartIcon)) {
-      setHeartBlack(true);
-    }
-  };
+  // const setRecipesFavoritesInLocalStorage = (obj) => {
+  //   localStorage.setItem('favoriteRecipes', JSON.stringify([{ id,
+  //     type: obj.type,
+  //     nationality: obj.nationality,
+  //     category: obj.category,
+  //     alcoholicOrNot: obj.alcoholicOrNot,
+  //     name: obj.name,
+  //     image: obj.image }]));
+  //   if (obj.heart.includes(blackHeartIcon)) {
+  //     setHeartBlack(false);
+  //     localStorage.clear('favoriteRecipes');
+  //   } else if (obj.heart.includes(whiteHeartIcon)) {
+  //     setHeartBlack(true);
+  //   }
+  // };
   useEffect(() => {
     const recipesFinish = JSON.parse(localStorage.getItem('favoriteRecipes'));
     if (recipesFinish) {
       const idTrue = recipesFinish.some((v) => v.id === id);
       setHeartBlack(idTrue);
     }
-  }, [heartBlack]); // eslint-disable-line
+  }, [heartBlack, id]);
 
   return (
     <div className={ style.div_details }>
-      <h1>Recipe Details</h1>
       {recipes.map((recipe) => (
         <div key={ id }>
-          <img
-            className={ style.img_details }
-            data-testid="recipe-photo"
-            src={ path.includes('meals') ? recipe.strMealThumb : recipe.strDrinkThumb }
-            alt={ path.includes('meals') ? recipe.strMeal : recipe.strDrink }
-          />
-          <h3
-            data-testid="recipe-title"
-          >
-            {path.includes('meals') ? recipe.strMeal : recipe.strDrink}
-          </h3>
-
-          <span
-            data-testid="recipe-category"
-          >
-            {path.includes('meals') ? recipe.strCategory : recipe.strAlcoholic}
-          </span>
-          <ol>
-            {ingredients.map((ingredient, i) => (
-              <li
-                key={ i }
-                data-testid={ `${i}-ingredient-name-and-measure` }
+          <div className={ style.containerHeader }>
+            <div className={ style.mediaSocial }>
+              <img
+                className={ style.share }
+                src={ share }
+                alt=""
+              />
+              <img
+                className={ style.like }
+                src={ like }
+                alt=""
+              />
+            </div>
+            <div className={ style.titleDetails }>
+              <img
+                src={ path === 'meals' ? allComida : allBebida }
+                alt=""
+              />
+              <p
+                data-testid="recipe-category"
               >
-                {ingredient}
-              </li>
-            ))}
-          </ol>
-          <ol>
-            {measures.map((measure, i) => (
-              <li
-                key={ i }
-                data-testid={ `${i}-ingredient-name-and-measure` }
-              >
-                {measure}
-              </li>
-            ))}
-          </ol>
-          <h3
-            className={ style.instructions }
-            data-testid="instructions"
-          >
-            {recipe.strInstructions}
+                {path.includes('meals') ? recipe.strCategory : recipe.strAlcoholic}
+              </p>
+            </div>
+            <img
+              className={ style.img_details }
+              data-testid="recipe-photo"
+              src={ path.includes('meals') ? recipe.strMealThumb : recipe.strDrinkThumb }
+              alt={ path.includes('meals') ? recipe.strMeal : recipe.strDrink }
+            />
+            <h3
+              data-testid="recipe-title"
+            >
+              {path.includes('meals') ? recipe.strMeal : recipe.strDrink}
+            </h3>
+          </div>
+          <div>
+            <div className={ style.ingredients }>
+              <h1>Ingredients</h1>
+              <ul>
+                {ingredients.map((ingredient, i) => (
+                  ingredient !== '' && (
+                    <li
+                      key={ i }
+                      data-testid={ `${i}-ingredient-name-and-measure` }
+                    >
+                      {ingredient}
+                    </li>
+                  )
+                ))}
+                {measures.map((measure, i) => (
+                  measure !== '' && i < MAX_NUMBERS_CARDS_ACCOMPANIMETS - 1 && (
+                    <li
+                      key={ i }
+                      data-testid={ `${i}-ingredient-name-and-measure` }
+                    >
+                      {measure}
+                    </li>
+                  )
+                ))}
 
-          </h3>
-          {path.includes('meals') && <iframe
-            data-testid="video"
-            width="560"
-            height="315"
-            src={ recipe.strYoutube }
-            title="YouTube video player"
-          />}
+              </ul>
+            </div>
+          </div>
+
+          <div className={ style.containerInstructions }>
+            <h1>Instructions</h1>
+            <p
+              className={ style.instructions }
+              data-testid="instructions"
+            >
+              {recipe.strInstructions}
+            </p>
+          </div>
+          <div className={ style.video }>
+            <h1>Vídeo</h1>
+            {path.includes('meals') && <iframe
+              data-testid="video"
+              src={ recipe.strYoutube }
+              title="YouTube video player"
+            />}
+          </div>
         </div>
       ))}
-      <div className={ style.div_accompaniment }>
-
+      <div className={ style.recommended }>
+        <h1>Recommended</h1>
         {accompaniments.map((accompaniment, i) => (
           i < MAX_NUMBERS_CARDS_ACCOMPANIMETS
          && (
-           <div className="div-test">
+           <div className={ style.containerCard }>
              {' '}
              <img
                className={ style.img_accompaniment }
@@ -209,7 +218,7 @@ export default function RecipeDetails(idRecipes) {
       && (
         <ButtonDoneRecipes mealsOrDrinks={ mealsOrDrinks } id={ id } />
       )}
-      <ButtonCopy path={ path } />
+      {/* <ButtonCopy path={ path } />
       {
         recipes.map((recipe, i) => (
           <button
@@ -234,7 +243,7 @@ export default function RecipeDetails(idRecipes) {
             />
           </button>
         ))
-      }
+      } */}
     </div>
   );
 }

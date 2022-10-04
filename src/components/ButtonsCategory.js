@@ -3,8 +3,9 @@ import { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import AppContext from '../context/AppContext';
 import fetchRecipes from '../services';
+import styles from '../styles/ButtonsCategory.module.css';
 
-export default function ButtonsCategory({ categoryName }) {
+export default function ButtonsCategory({ categoryName, image }) {
   const [categoryClicked, setCategoryClicked] = useState('');
   const history = useHistory();
   const { setRecipes } = useContext(AppContext);
@@ -31,13 +32,18 @@ export default function ButtonsCategory({ categoryName }) {
       type="button"
       data-testid={ `${categoryName}-category-filter` }
       onClick={ handleClick }
+      className={ styles.button }
     >
+      <img
+        src={ image }
+        alt=""
+      />
       {categoryName}
-
     </button>
   );
 }
 
 ButtonsCategory.propTypes = {
   categoryName: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
 };

@@ -1,0 +1,14 @@
+.button {
+  background: transparent;
+  border: none;
+  color: transparent;
+  height: 80px;
+  padding-bottom: 20px;
+  width: 60px;
+}
+
+.button img {
+  height: 100%;
+  width: 100%;
+}
+

@@ -1,0 +1,81 @@
+.containerHeader {
+  min-height: 147px;
+  width: 360px;
+}
+
+header {
+  align-items: center;
+  background: var(--yellow-700);
+  display: flex;
+  height: 52px;
+  justify-content: space-around;
+  width: 100%;
+}
+
+header div {
+  align-items: center;
+  display: flex;
+  gap: 20px;
+  height: 52px;
+  justify-content: space-between;
+}
+
+
+.imgIcon {
+  height: 35px;
+  width: 40px;
+}
+
+
+.imgHeader, .link, .search {
+  height: 30px;
+  width: 30px;
+}
+
+.titleHeader {
+  align-items: center;
+  display: flex;
+  gap: 2px;
+  height: 100%;
+}
+
+.titleHeader h1 {
+  color: var(--purple-500);
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0.165em;
+  margin-top: 7px;
+  text-transform: uppercase;
+}
+
+.titleHeader strong {
+  color: var(--purple-500);
+  font-size: 20px;
+  letter-spacing: normal;
+  text-transform: lowercase;
+}
+
+.headerRecipes {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.headerRecipes img {
+  height: 50px;
+  width: 60px;
+}
+
+.headerRecipes h1 {
+  color: var(--purple-500);
+  font-family: Epilogue , sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.105em;
+  text-transform: uppercase;
+}

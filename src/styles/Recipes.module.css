@@ -1,0 +1,22 @@
+.containerRecipes {
+  margin-bottom: 55px;
+}
+
+.category {
+  align-items: center;
+  display: flex;
+  margin-top: 10px;
+  padding: 0 5px;
+}
+
+.contentRecipes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 10px;
+}
+
+.contentRecipes a {
+  color: inherit;
+  text-decoration: none;
+}
+
