@@ -96,6 +96,7 @@ function RecipeInProgress(idRecipes) {
   };
   const mealsOrDrink = path.includes('meals') ? 'meals' : 'drinks';
   console.log(setIsDisabled);
+  
   return (
     <div>
       {recipes.map((recipe) => (
