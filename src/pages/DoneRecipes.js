@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import Header from '../components/Header';
 import AppContext from '../context/AppContext';
 import fetchRecipes from '../services';
+
 function DoneRecipes() {
   // requisito 43
   // requisito 44 ao 46
@@ -23,7 +24,6 @@ function DoneRecipes() {
   const { pathname } = useContext(AppContext);
 
   const idRecipes = pathname.replace(/[^0-9]/g, ''); // regex
-   
 
   useEffect(() => {
     const getRecipes = async () => {
@@ -77,10 +77,10 @@ function DoneRecipes() {
   };
 
   // requisito 49 redirecionar para a página de detalhes caso seja clickado na foto ou nome
-  const redirect = () => {
+  /*  const redirect = () => {
     history.push('/meals/:id');
-   // history.push('/drinks/:id');
-  };
+   history.push('/drinks/:id');
+  };  */
 
   return (
     <div>
@@ -112,7 +112,7 @@ function DoneRecipes() {
         </button>
       </section>
       <div>
-        {/*render.map((receita, index) => (
+        {/* render.map((receita, index) => (
           <div key={ index }>
             <img
               src={receita.image }
@@ -138,7 +138,7 @@ function DoneRecipes() {
             </button>
             <span data-testid={ `${index}-${tagName}-horizontal-tag` }>tags</span>
           </div>
-        ))*/}
+        )) */}
       </div>
     </div>
   );
