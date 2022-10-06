@@ -11,40 +11,13 @@ function DoneRecipes() {
   // data que a pessoa fez a receita, 2 primeiras tags,
   // botao de compartilhar
   // um estado para as comidas
-  const [food, setFood] = useState([]);
-  // um estado para bebidas
-  const [drinks, setDrinks] = useState([]);
-  // um estado para todos
   const [alimentos, setAlimentos] = useState([]);
   // um estado para o filltro utilizado
   const [filter, setFilter] = useState({});
-  // um estado para renderizar
-  const [render, setRender] = useState(alimentos);
+  // const idRecipes = pathname.replace(/[^0-9]/g, ''); // regex
 
-  const { pathname } = useContext(AppContext);
 
-  const idRecipes = pathname.replace(/[^0-9]/g, ''); // regex
 
-  useEffect(() => {
-    const getRecipes = async () => {
-      if (pathname.includes('meals')) {
-        const
-          meals = await fetchRecipes(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idRecipes}`);
-        setFood(...food, meals);
-        setAlimentos(...alimentos, food);
-        setRender(alimentos);
-      } {
-        const
-          bebida = await fetchRecipes(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${idRecipes}`);
-        setDrinks(bebida);
-        setAlimentos(...alimentos, drinks);
-        setRender(alimentos);
-      }
-    };
-    getRecipes();
-  }, [id]);
-
-  console.log(render);
   // requisito 48 3 botoes um para filtrar bebidas ,
   // o outro para filtrar comidas e o outro para remover todos
 

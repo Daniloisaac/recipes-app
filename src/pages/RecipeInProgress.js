@@ -88,9 +88,37 @@ function RecipeInProgress(idRecipes) {
     setCheckedBox(true);
   };
 
-  const hadleClick = () => {
-    history.push('/done-recipes');
-  };
+    const hadleClick = () => {
+      if (path.includes('meals')){
+        localStorage.setItem('doneRecipes', JSON.stringify([
+          {
+            id: recipes[0].idMeal,
+            type: 'meal',
+            nationality: recipes[0].strArea,
+            category: recipes[0].strCategory,
+            alcoholicOrNot: '',
+            name: recipes[0].strMeal,
+            image: recipes[0].strMealThumb,
+            doneDate: 'naosei',
+            tags: recipes[0].strTags,
+          }]));
+      } else if (path.includes('drinks')) {
+        localStorage.setItem('doneRecipes', JSON.stringify([
+          {
+            id: recipes[0].idDrink,
+            type: 'drink',
+            nationality: recipes[0].strArea,
+            category: '',
+            alcoholicOrNot: recipes[0].strAlcoholic,
+            name: recipes[0].strDrink,
+            image: recipes[0].strDrinkThumb,
+            doneDate: 'naosei',
+            tags: recipes[0].strTags,
+          }]));
+      };
+      history.push('/done-recipes');
+    };
+    
   const mealsOrDrink = path.includes('meals') ? 'meals' : 'drinks';
   console.log(setIsDisabled);
 
