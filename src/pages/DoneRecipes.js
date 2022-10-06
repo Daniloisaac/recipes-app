@@ -16,8 +16,6 @@ function DoneRecipes() {
   const [filter, setFilter] = useState({});
   // const idRecipes = pathname.replace(/[^0-9]/g, ''); // regex
 
-
-
   // requisito 48 3 botoes um para filtrar bebidas ,
   // o outro para filtrar comidas e o outro para remover todos
 
