@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import Header from '../components/Header';
 import Share from '../images/shareIcon.svg';
 
@@ -18,7 +19,7 @@ function DoneRecipes() {
   useEffect(() => {
     const recipe = JSON.parse(localStorage.getItem('doneRecipes'));
     setAlimentos(recipe);
-    setRender(alimentos);
+    setRender(recipe);
   }, []);
   console.log(alimentos);
 
@@ -54,10 +55,17 @@ function DoneRecipes() {
   };
 
   // requisito 49 redirecionar para a página de detalhes caso seja clickado na foto ou nome
-  /*  const redirect = () => {
-    history.push('/meals/:id');
-   history.push('/drinks/:id');
-  };  */
+  const history = useHistory();
+
+  const redirection = (param) => {
+    history.push(`/meals/${param}`);
+    console.log('clicadooooo');
+    console.log(`/meals/${param}`);
+  };
+
+  const redirect = (param) => {
+    history.push(`/drinks/${param}`);
+  };
 
   return (
     <div>
@@ -95,9 +103,8 @@ function DoneRecipes() {
         {render.map((receita, index) => receita.type === 'meal' ? (
           <div key={ index }>
             <p data-testid={`${index}-horizontal-top-text`}>{`${receita.nationality} - ${receita.category}`}</p>
-            <img src={receita.image} data-testid={`${index}-horizontal-image`}/>
-             
-             <h1 data-testid={`${index}-horizontal-name`}>{receita.name}</h1>
+            <h1 data-testid={`${index}-horizontal-name`}  onClick={() => redirection(receita.id)}>{receita.name}</h1>
+            <img src={receita.image} data-testid={`${index}-horizontal-image`} onClick={() => redirection(receita.id)}/>
              <span data-testid={`${index}-horizontal-done-date`}>{receita.doneDate}</span>
              <button type="button" >
             <img src={ Share } alt="share button" data-testid={`${index}-horizontal-share-btn`}/>
@@ -107,9 +114,9 @@ function DoneRecipes() {
           </div>
         ) : (
           <div>
-          <img src={receita.image} data-testid={`${index}-horizontal-image`}/>
-          <span data-testid={`${index}-horizontal-top-text`}>{`${receita.nationality} - ${receita.alcoholicOrNot}`}</span>
-          <h1 data-testid={`${index}-horizontal-name`}>{receita.name}</h1>
+          <p data-testid={`${index}-horizontal-top-text`}>{`${receita.nationality} - ${receita.alcoholicOrNot}`}</p>
+          <h1 data-testid={`${index}-horizontal-name`}  onClick={() => redirect(receita.id)} >{receita.name}</h1>
+          <img src={receita.image} data-testid={`${index}-horizontal-image`}  onClick={() => redirect(receita.id)}/>
           <span data-testid={`${index}-horizontal-done-date`}>{receita.doneDate}</span>
           <button type="button" >
            <img src={ Share } alt="share button" data-testid={`${index}-horizontal-share-btn`}/>
