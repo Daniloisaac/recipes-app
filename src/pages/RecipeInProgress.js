@@ -89,10 +89,8 @@ function RecipeInProgress(idRecipes) {
     setCheckedBox(true);
   };
 
-  const { setPathname } = useContext(AppContext);
   const hadleClick = () => {
     history.push('/done-recipes');
-    setPathname(path);
   };
   const mealsOrDrink = path.includes('meals') ? 'meals' : 'drinks';
   console.log(setIsDisabled);

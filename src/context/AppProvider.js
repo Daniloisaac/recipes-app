@@ -5,7 +5,6 @@ import AppContext from './AppContext';
 function AppProvider({ children }) {
   const [recipes, setRecipes] = useState([]);
   const [recipeCategories, setRecipeCategories] = useState([]);
-  const [pathname, setPathname] = useState('');
 
   const context = useMemo(() => ({
     recipes,
