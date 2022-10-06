@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import fetchRecipes from '../services';
-import AppContext from '../context/AppContext';
 import ButtonCopy from '../components/ButtonCopy';
 import ButtonFavorite from '../components/ButtonFavorite';
 
