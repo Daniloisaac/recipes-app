@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import Header from '../components/Header';
-import AppContext from '../context/AppContext';
-import fetchRecipes from '../services';
+import Share from '../images/shareIcon.svg';
 
 function DoneRecipes() {
   // requisito 43
@@ -11,76 +11,61 @@ function DoneRecipes() {
   // data que a pessoa fez a receita, 2 primeiras tags,
   // botao de compartilhar
   // um estado para as comidas
-  const [food, setFood] = useState([]);
-  // um estado para bebidas
-  const [drinks, setDrinks] = useState([]);
-  // um estado para todos
   const [alimentos, setAlimentos] = useState([]);
   // um estado para o filltro utilizado
   const [filter, setFilter] = useState({});
-  // um estado para renderizar
+  // const idRecipes = pathname.replace(/[^0-9]/g, ''); // regex
   const [render, setRender] = useState(alimentos);
-
-  const { pathname } = useContext(AppContext);
-
-  const idRecipes = pathname.replace(/[^0-9]/g, ''); // regex
-
   useEffect(() => {
-    const getRecipes = async () => {
-      if (pathname.includes('meals')) {
-        const
-          meals = await fetchRecipes(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idRecipes}`);
-        setFood(...food, meals);
-        setAlimentos(...alimentos, food);
-        setRender(alimentos);
-      } {
-        const
-          bebida = await fetchRecipes(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${idRecipes}`);
-        setDrinks(bebida);
-        setAlimentos(...alimentos, drinks);
-        setRender(alimentos);
-      }
-    };
-    getRecipes();
-  }, [id]);
+    const recipe = JSON.parse(localStorage.getItem('doneRecipes'));
+    setAlimentos(recipe);
+    setRender(recipe);
+  }, []);
+  console.log(alimentos);
 
-  console.log(render);
+  // o que falta para finalizar os requisitos 44 ao 46 :
+  // ajustar o codigo de renderizacao de tags
+
+  // ajustar data de finalizacao da receita
+  // pegar data e rendirizar
+
+  // requisito 47 clipboard
+
   // requisito 48 3 botoes um para filtrar bebidas ,
   // o outro para filtrar comidas e o outro para remover todos
-
-  const comida = () => {
-    setFilter({ filtro: 'comida' });
-    console.log(filter);
-    setRender(food);
-  };
-
-  const bebida = () => {
-    setFilter({ filtro: 'bebida' });
-    console.log(filter);
-    setRender(drinks);
-  };
-
-  const removeFilter = () => {
-    setFilter({});
-    console.log(filter);
-    setRender(alimentos);
-  };
-
-  handleFilter = (e) => {
-    const buttonClicked = e.target.value;
-    if (buttonClicked === Meals) {
-      comida();
-    } else if (buttonClicked === Drink) {
-      bebida();
+  const handleFilter = (e) => {
+    const filtro = e.target.name;
+    console.log(filtro);
+    if (filtro === 'Meals') {
+      const novoArray = alimentos.filter((comida) => comida.type === 'meal');
+      setRender(novoArray);
+      console.log(novoArray);
+      setFilter({ filtro: 'comida' })
+      console.log(filter);
+    }else if(filtro === 'Drink') {
+      const array = alimentos.filter((comida) => comida.type === 'drink');
+      setRender(array)
+      setFilter({ filtro: 'bebida' }) 
+      console.log(filter)
+    } else {
+      setRender(alimentos);
+      setFilter({});
+      console.log(filter);
     }
-    removeFilter();
   };
 
   // requisito 49 redirecionar para a página de detalhes caso seja clickado na foto ou nome
-  /*  const redirect = () => {
-    history.push('/meals/:id');
-   history.push('/drinks/:id');
-  };  */
+  const history = useHistory();
+
+  const redirection = (param) => {
+    history.push(`/meals/${param}`);
+    console.log('clicadooooo');
+    console.log(`/meals/${param}`);
+  };
+
+  const redirect = (param) => {
+    history.push(`/drinks/${param}`);
+  };
 
   return (
     <div>
@@ -91,6 +76,7 @@ function DoneRecipes() {
       <section>
         <button
           type="button"
+          name="All"
           onClick={ handleFilter }
           data-testid="filter-by-all-btn"
         >
@@ -98,6 +84,7 @@ function DoneRecipes() {
         </button>
         <button
           type="button"
+          name="Meals"
           onClick={ handleFilter }
           data-testid="filter-by-meal-btn"
         >
@@ -105,6 +92,7 @@ function DoneRecipes() {
         </button>
         <button
           type="button"
+          name="Drink"
           onClick={ handleFilter }
           data-testid="filter-by-drink-btn"
         >
@@ -112,33 +100,30 @@ function DoneRecipes() {
         </button>
       </section>
       <div>
-        {/* render.map((receita, index) => (
+        {render.map((receita, index) => receita.type === 'meal' ? (
           <div key={ index }>
-            <img
-              src={receita.image }
-              alt={descricaoimage}
-              onClick={redirect}
-              data-testid={ `${index}-horizontal-image` }
-            />
-            <span
-              data-testid={`${index}-horizontal-name`}
-              onClick={redirect}
-            >
-              nome da receita
-            </span>
-            <span
-              data-testid={ `${index}-horizontal-top-text` }
-            >categoria ou se é alcoolica</span>
-            <span data-testid={ `${index}-horizontal-done-date` }>data</span>
-            <button
-              type="button"
-              data-testid={ `${index}-horizontal-share-btn` }
-            >
-              share
-            </button>
-            <span data-testid={ `${index}-${tagName}-horizontal-tag` }>tags</span>
+            <p data-testid={`${index}-horizontal-top-text`}>{`${receita.nationality} - ${receita.category}`}</p>
+            <h1 data-testid={`${index}-horizontal-name`}  onClick={() => redirection(receita.id)}>{receita.name}</h1>
+            <img src={receita.image} data-testid={`${index}-horizontal-image`} onClick={() => redirection(receita.id)}/>
+             <span data-testid={`${index}-horizontal-done-date`}>{receita.doneDate}</span>
+             <button type="button" >
+            <img src={ Share } alt="share button" data-testid={`${index}-horizontal-share-btn`}/>
+              </button>
+            {/* receita !== null ? { receita.tags.map((tag) => (<span data-testid={`${index}-${tag}-horizontal-tag`}>{}</span>) } )
+            :'' */}
           </div>
-        )) */}
+        ) : (
+          <div>
+          <p data-testid={`${index}-horizontal-top-text`}>{`${receita.nationality} - ${receita.alcoholicOrNot}`}</p>
+          <h1 data-testid={`${index}-horizontal-name`}  onClick={() => redirect(receita.id)} >{receita.name}</h1>
+          <img src={receita.image} data-testid={`${index}-horizontal-image`}  onClick={() => redirect(receita.id)}/>
+          <span data-testid={`${index}-horizontal-done-date`}>{receita.doneDate}</span>
+          <button type="button" >
+           <img src={ Share } alt="share button" data-testid={`${index}-horizontal-share-btn`}/>
+           </button>
+           {/*receita.tags.map((tag) => (<span data-testid={`${index}-${tag}-horizontal-tag`}>{tag}</span>))*/}
+          </div>
+        )) }
       </div>
     </div>
   );

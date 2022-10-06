@@ -11,8 +11,6 @@ function AppProvider({ children }) {
     setRecipes,
     recipeCategories,
     setRecipeCategories,
-    setPathname,
-    pathname,
   }), [recipes, recipeCategories]); // eslint-disable-line
 
   return (
