@@ -8,7 +8,7 @@ function RecipeInProgress(idRecipes) {
   // const [heartBlack, setHeartBlack] = useState(false);
   const [recipes, setRecipes] = useState([{}]);
   const [checkedBox, setCheckedBox] = useState(true);
-  const [isDisabled, setIsDisabled] = useState(true);
+  // const [isDisabled, setIsDisabled] = useState(true);
   const history = useHistory();
   const path = history.location.pathname;
   const {
@@ -87,8 +87,11 @@ function RecipeInProgress(idRecipes) {
     localStorage.setItem('inProgressRecipes', JSON.stringify(arrayFood));
     setCheckedBox(true);
   };
-
-    const hadleClick = () => {
+   
+  console.log(path);
+  console.log(recipes);
+  console.log(recipes[0]);
+   const hadleClickFinish = () => {
       if (path.includes('meals')){
         localStorage.setItem('doneRecipes', JSON.stringify([
           {
@@ -120,7 +123,7 @@ function RecipeInProgress(idRecipes) {
     };
     
   const mealsOrDrink = path.includes('meals') ? 'meals' : 'drinks';
-  console.log(setIsDisabled);
+  // console.log(setIsDisabled);
 
   return (
     <div>
@@ -170,8 +173,8 @@ function RecipeInProgress(idRecipes) {
           <button
             type="button"
             data-testid="finish-recipe-btn"
-            onClick={ hadleClick }
-            disabled={ isDisabled }
+            onClick={ hadleClickFinish }
+            // disabled={ isDisabled }
           >
             Finish recipe
           </button>
