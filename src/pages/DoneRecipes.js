@@ -91,7 +91,7 @@ function DoneRecipes() {
         </button>
       </section>
       <div>
-        {render.map((receita, index) => (receita.type === 'meal' ? (
+        {render && render.map((receita, index) => (receita.type === 'meal' ? (
           <div key={ index } className="divDone">
             <p
               data-testid={ `${index}-horizontal-top-text` }
