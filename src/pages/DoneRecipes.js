@@ -79,7 +79,7 @@ function DoneRecipes() {
           onClick={ handleFilter }
           data-testid="filter-by-meal-btn"
         >
-          Meals
+          Mealss
         </button>
         <button
           type="button"
