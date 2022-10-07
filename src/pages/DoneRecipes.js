@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Share from '../images/shareIcon.svg';
 
@@ -23,12 +23,6 @@ function DoneRecipes() {
   }, []);
   console.log(alimentos);
 
-  // o que falta para finalizar os requisitos 44 ao 46 :
-  // ajustar o codigo de renderizacao de tags
-
-  // ajustar data de finalizacao da receita
-  // pegar data e rendirizar
-
   // requisito 47 clipboard
 
   // requisito 48 3 botoes um para filtrar bebidas ,
@@ -40,13 +34,13 @@ function DoneRecipes() {
       const novoArray = alimentos.filter((comida) => comida.type === 'meal');
       setRender(novoArray);
       console.log(novoArray);
-      setFilter({ filtro: 'comida' })
+      setFilter({ filtro: 'comida' });
       console.log(filter);
-    }else if(filtro === 'Drink') {
+    } else if (filtro === 'Drink') {
       const array = alimentos.filter((comida) => comida.type === 'drink');
-      setRender(array)
-      setFilter({ filtro: 'bebida' }) 
-      console.log(filter)
+      setRender(array);
+      setFilter({ filtro: 'bebida' });
+      console.log(filter);
     } else {
       setRender(alimentos);
       setFilter({});
@@ -55,17 +49,6 @@ function DoneRecipes() {
   };
 
   // requisito 49 redirecionar para a página de detalhes caso seja clickado na foto ou nome
-  const history = useHistory();
-
-  const redirection = (param) => {
-    history.push(`/meals/${param}`);
-    console.log('clicadooooo');
-    console.log(`/meals/${param}`);
-  };
-
-  const redirect = (param) => {
-    history.push(`/drinks/${param}`);
-  };
 
   return (
     <div>
@@ -100,30 +83,81 @@ function DoneRecipes() {
         </button>
       </section>
       <div>
-        {render.map((receita, index) => receita.type === 'meal' ? (
+        {render.map((receita, index) => (receita.type === 'meal' ? (
           <div key={ index }>
-            <p data-testid={`${index}-horizontal-top-text`}>{`${receita.nationality} - ${receita.category}`}</p>
-            <h1 data-testid={`${index}-horizontal-name`}  onClick={() => redirection(receita.id)}>{receita.name}</h1>
-            <img src={receita.image} data-testid={`${index}-horizontal-image`} onClick={() => redirection(receita.id)}/>
-             <span data-testid={`${index}-horizontal-done-date`}>{receita.doneDate}</span>
-             <button type="button" >
-            <img src={ Share } alt="share button" data-testid={`${index}-horizontal-share-btn`}/>
-              </button>
-            {/* receita !== null ? { receita.tags.map((tag) => (<span data-testid={`${index}-${tag}-horizontal-tag`}>{}</span>) } )
-            :'' */}
+            <p
+              data-testid={ `${index}-horizontal-top-text` }
+            >
+              { `${receita.nationality} - ${receita.category}` }
+            </p>
+            <Link to={ `/meals/${receita.id}` }>
+              <h1 data-testid={ `${index}-horizontal-name` }>
+                {receita.name}
+              </h1>
+              <img
+                src={ receita.image }
+                alt={ receita.name }
+                data-testid={ `${index}-horizontal-image` }
+              />
+            </Link>
+            <span
+              data-testid={ `${index}-horizontal-done-date` }
+            >
+              {receita.doneDate}
+            </span>
+            <button type="button">
+              <img
+                src={ Share }
+                alt="share button"
+                data-testid={ `${index}-horizontal-share-btn` }
+              />
+            </button>
+            { receita.tags
+            && receita.tags.map((tag, indice) => (
+              <span
+                key={ indice }
+                data-testid={ `${index}-${tag}-horizontal-tag` }
+              >
+                {tag}
+              </span>
+            )) }
           </div>
         ) : (
-          <div>
-          <p data-testid={`${index}-horizontal-top-text`}>{`${receita.nationality} - ${receita.alcoholicOrNot}`}</p>
-          <h1 data-testid={`${index}-horizontal-name`}  onClick={() => redirect(receita.id)} >{receita.name}</h1>
-          <img src={receita.image} data-testid={`${index}-horizontal-image`}  onClick={() => redirect(receita.id)}/>
-          <span data-testid={`${index}-horizontal-done-date`}>{receita.doneDate}</span>
-          <button type="button" >
-           <img src={ Share } alt="share button" data-testid={`${index}-horizontal-share-btn`}/>
-           </button>
-           {/*receita.tags.map((tag) => (<span data-testid={`${index}-${tag}-horizontal-tag`}>{tag}</span>))*/}
+          <div key={ index }>
+            <p
+              data-testid={ `${index}-horizontal-top-text` }
+            >
+              {`${receita.nationality} - ${receita.alcoholicOrNot}`}
+            </p>
+            <Link to={ `/drinks/${receita.id}` }>
+              <h1 data-testid={ `${index}-horizontal-name` }>
+                {receita.name}
+              </h1>
+              <img
+                src={ receita.image }
+                alt={ receita.name }
+                data-testid={ `${index}-horizontal-image` }
+              />
+            </Link>
+            <span
+              data-testid={ `${index}-horizontal-done-date` }
+            >
+              {receita.doneDate}
+            </span>
+            <button type="button">
+              <img
+                src={ Share }
+                alt="share button"
+                data-testid={ `${index}-horizontal-share-btn` }
+              />
+            </button>
+            { receita.tags && receita.tags.map((tag, indice) => (
+              <span key={ indice } data-testid={ `${index}-${tag}-horizontal-tag` }>
+                {tag}
+              </span>
+            )) }
           </div>
-        )) }
+        )))}
       </div>
     </div>
   );
