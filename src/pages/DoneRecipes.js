@@ -21,9 +21,10 @@ function DoneRecipes() {
     setAlimentos(recipe);
     setRender(recipe);
   }, []);
+  console.log(alimentos);
 
-  const rendery = () => {
-    receita.tags.map((tag, indice) => (
+  const rendery = (param) => {
+    param.map((tag, indice) => (
       <span key={ indice } data-testid={ `${index}-${tag}-horizontal-tag` }>
         {tag}
       </span>
@@ -90,7 +91,7 @@ function DoneRecipes() {
         </button>
       </section>
       <div>
-        {render && render.map((receita, index) => (receita.type === 'meal' ? (
+        {render.map((receita, index) => (receita.type === 'meal' ? (
           <div key={ index } className="divDone">
             <p
               data-testid={ `${index}-horizontal-top-text` }
@@ -160,7 +161,7 @@ function DoneRecipes() {
             >
               {receita.doneDate}
             </p>
-            { receita.tags && rendery() }
+            { receita.tags && rendery(receita.tags) }
           </div>
         )))}
       </div>
