@@ -83,3 +83,13 @@
     transform: rotate(-10deg);
   }
 }
+
+/* DoneRecipes */
+
+.doneImage {
+  width: 300px ;
+}
+
+.divDone {
+  width: 350px;
+}

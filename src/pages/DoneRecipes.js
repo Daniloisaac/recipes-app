@@ -21,7 +21,14 @@ function DoneRecipes() {
     setAlimentos(recipe);
     setRender(recipe);
   }, []);
-  console.log(alimentos);
+
+  const rendery = () => {
+    receita.tags.map((tag, indice) => (
+      <span key={ indice } data-testid={ `${index}-${tag}-horizontal-tag` }>
+        {tag}
+      </span>
+    ));
+  };
 
   // requisito 47 clipboard
 
@@ -83,8 +90,8 @@ function DoneRecipes() {
         </button>
       </section>
       <div>
-        {render.map((receita, index) => (receita.type === 'meal' ? (
-          <div key={ index }>
+        {render && render.map((receita, index) => (receita.type === 'meal' ? (
+          <div key={ index } className="divDone">
             <p
               data-testid={ `${index}-horizontal-top-text` }
             >
@@ -95,16 +102,12 @@ function DoneRecipes() {
                 {receita.name}
               </h1>
               <img
+                className="doneImage"
                 src={ receita.image }
                 alt={ receita.name }
                 data-testid={ `${index}-horizontal-image` }
               />
             </Link>
-            <span
-              data-testid={ `${index}-horizontal-done-date` }
-            >
-              {receita.doneDate}
-            </span>
             <button type="button">
               <img
                 src={ Share }
@@ -112,6 +115,11 @@ function DoneRecipes() {
                 data-testid={ `${index}-horizontal-share-btn` }
               />
             </button>
+            <p
+              data-testid={ `${index}-horizontal-done-date` }
+            >
+              {receita.doneDate}
+            </p>
             { receita.tags
             && receita.tags.map((tag, indice) => (
               <span
@@ -123,7 +131,7 @@ function DoneRecipes() {
             )) }
           </div>
         ) : (
-          <div key={ index }>
+          <div key={ index } className="divDone">
             <p
               data-testid={ `${index}-horizontal-top-text` }
             >
@@ -134,16 +142,12 @@ function DoneRecipes() {
                 {receita.name}
               </h1>
               <img
+                className="doneImage"
                 src={ receita.image }
                 alt={ receita.name }
                 data-testid={ `${index}-horizontal-image` }
               />
             </Link>
-            <span
-              data-testid={ `${index}-horizontal-done-date` }
-            >
-              {receita.doneDate}
-            </span>
             <button type="button">
               <img
                 src={ Share }
@@ -151,11 +155,12 @@ function DoneRecipes() {
                 data-testid={ `${index}-horizontal-share-btn` }
               />
             </button>
-            { receita.tags && receita.tags.map((tag, indice) => (
-              <span key={ indice } data-testid={ `${index}-${tag}-horizontal-tag` }>
-                {tag}
-              </span>
-            )) }
+            <p
+              data-testid={ `${index}-horizontal-done-date` }
+            >
+              {receita.doneDate}
+            </p>
+            { receita.tags && rendery() }
           </div>
         )))}
       </div>
