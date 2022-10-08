@@ -123,10 +123,13 @@ export default function RecipeDetails(idRecipes) {
   }, [heartBlack]); // eslint-disable-line
 
   return (
-    <div className={ style.div_details }>
+    <div>
       <h1>Recipe Details</h1>
       {recipes.map((recipe) => (
-        <div key={ id }>
+        <div
+          key={ id }
+          className={ style.div_details }
+        >
           <img
             className={ style.img_details }
             data-testid="recipe-photo"
@@ -185,7 +188,7 @@ export default function RecipeDetails(idRecipes) {
         {accompaniments.map((accompaniment, i) => (
           i < MAX_NUMBERS_CARDS_ACCOMPANIMETS
          && (
-           <div className="div-test">
+           <div className={ style.div_test }>
              {' '}
              <img
                className={ style.img_accompaniment }

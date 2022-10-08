@@ -1,49 +1,55 @@
-.img-details {
-  height: 40vw;
+/* .div_details {
+  height: 30px;
+  width: 30px;
+} */
+
+.img_details {
+  height: 40vh;
   width: 40vh;
 }
 
 .instructions {
   font-size: 1em;
+
 }
 
-.img-accompaniment {
-  height: 160px;
-  width: 160px;
+.img_accompaniment {
+  height: 250px;
+  width: 250px;
 }
 
-.div-accompaniment {
+.div_accompaniment {
   display: flex;
   gap: 10px;
   overflow: auto;
   width: 100vw;
 }
 
-.div-test {
+.div_test {
   display: flex;
   height: 100%;
   text-align: center;
   width: 50%;
 }
 
-.button-start {
+.button_start {
   bottom: 0;
   position: fixed;
 }
 
-.button-share {
+.button_share {
   bottom: 3px;
   left: 240px;
   position: fixed;
 }
 
-.button-favorite {
+.button_favorite {
   bottom: 3px;
   left: 140px;
   position: fixed;
 }
 
-.div-alert {
+.div_alert {
   left: 280px;
   position: fixed;
   top: 30px;
