@@ -28,7 +28,10 @@ function FavoriteRecipes() {
         title="Favorite Recipes"
         search={ false }
       />
-      <ButtonFilter />
+      <ButtonFilter
+        favoriteRecipes={ favoriteRecipes }
+        setFavoriteRecipes={ setFavoriteRecipes }
+      />
       {favoriteRecipes.map((recipe, index) => (
         <CardFavorites
           key={ recipe.id }

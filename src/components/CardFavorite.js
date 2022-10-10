@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clipboardCopy from 'clipboard-copy';
+import { Link } from 'react-router-dom';
 import imageShare from '../images/shareIcon.svg';
 import favoriteBlackIcon from '../images/blackHeartIcon.svg';
 
@@ -37,12 +38,14 @@ export default function CardFavorites(
   return (
     <div>
       {copy && <p>Link copied!</p>}
-      <img
-        src={ srcImage }
-        alt=""
-        data-testid={ `${index}-horizontal-image` }
-        style={ { width: '200px' } }
-      />
+      <Link to={ `/${type}s/${id}` }>
+        <img
+          src={ srcImage }
+          alt=""
+          data-testid={ `${index}-horizontal-image` }
+          style={ { width: '200px' } }
+        />
+      </Link>
 
       {type === 'meal' ? (
         <p data-testid={ `${index}-horizontal-top-text` }>
@@ -53,7 +56,9 @@ export default function CardFavorites(
           {alcoholicOrNot}
         </p>
       )}
-      <p data-testid={ `${index}-horizontal-name` }>{nameRecipe}</p>
+      <Link to={ `/${type}s/${id}` }>
+        <p data-testid={ `${index}-horizontal-name` }>{nameRecipe}</p>
+      </Link>
       <p data-testid={ `${index}-horizontal-done-date` }>{date}</p>
       <button
         type="button"
