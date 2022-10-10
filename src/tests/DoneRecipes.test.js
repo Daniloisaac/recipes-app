@@ -120,4 +120,22 @@ describe('testando a tela Done Recipes com Mock do localStorage', () => {
     const datedrink = screen.getByTestId(/0-horizontal-name/i);
     expect(datedrink).toBeInTheDocument();
   });
+  test('testa se há bebida após clickar em all', () => {
+    renderWithRouter(<DoneRecipes />);
+    const drink = screen.getByTestId(/filter-by-drink-btn/i);
+    userEvent.click(drink);
+    const all = screen.getByTestId(/filter-by-all-btn/i);
+    userEvent.click(all);
+    const namedrink = screen.getByTestId(/1-horizontal-name/i);
+    expect(namedrink).toBeInTheDocument();
+  });
+  test('testa se há comida após clickar em all', () => {
+    renderWithRouter(<DoneRecipes />);
+    const drink = screen.getByTestId(/filter-by-drink-btn/i);
+    userEvent.click(drink);
+    const all = screen.getByTestId(/filter-by-all-btn/i);
+    userEvent.click(all);
+    const namemeal = screen.getByTestId(/0-horizontal-name/i);
+    expect(namemeal).toBeInTheDocument();
+  });
 });
