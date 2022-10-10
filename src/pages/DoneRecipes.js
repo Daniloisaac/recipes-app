@@ -166,7 +166,7 @@ function DoneRecipes() {
                 data-testid={ `${index}-horizontal-image` }
               />
             </Link>
-            <button type="button" >
+            <button type="button">
               <img
                 src={ Share }
                 alt="share button"
