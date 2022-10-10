@@ -48,7 +48,7 @@ function DoneRecipes() {
     copy(`http://localhost:3000/drinks/${param}`);
     setAlerta(true);
   }; */
-
+  /* onClick={ () => handleShare(receita.id) } onClick={ () => handleShareDrink(receita.id) } */
   // requisito 48 3 botoes um para filtrar bebidas ,
   // o outro para filtrar comidas e o outro para remover todos
   const handleFilter = (e) => {
@@ -126,7 +126,7 @@ function DoneRecipes() {
                 data-testid={ `${index}-horizontal-image` }
               />
             </Link>
-            <button type="button" onClick={ () => handleShare(receita.id) }>
+            <button type="button">
               <img
                 src={ Share }
                 alt="share button"
@@ -166,7 +166,7 @@ function DoneRecipes() {
                 data-testid={ `${index}-horizontal-image` }
               />
             </Link>
-            <button type="button" onClick={ () => handleShareDrink(receita.id) }>
+            <button type="button" >
               <img
                 src={ Share }
                 alt="share button"
