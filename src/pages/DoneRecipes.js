@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'; // useHistory
+// import copy from 'clipboard-copy';
 import Header from '../components/Header';
 import Share from '../images/shareIcon.svg';
 
 function DoneRecipes() {
   // requisito 43
-  // requisito 44 ao 46
+  // salvar no localstorage
   // enviar dados a patir do click do botao finish
+  // requisito 44 ao 46
   // caso seja comida foto, nome, categoria,nacionalidade,
   // data que a pessoa fez a receita, 2 primeiras tags,
   // botao de compartilhar
@@ -16,24 +18,37 @@ function DoneRecipes() {
   const [filter, setFilter] = useState({});
   // const idRecipes = pathname.replace(/[^0-9]/g, ''); // regex
   const [render, setRender] = useState(alimentos);
+
+  // const [alerta, setAlerta] = useState(false);
+
   useEffect(() => {
     const recipe = JSON.parse(localStorage.getItem('doneRecipes'));
-    setAlimentos(recipe);
+    setAlimentos(...alimentos, recipe);
     setRender(recipe);
   }, []);
   console.log(alimentos);
 
-  const rendery = (param) => {
+  /* const rendery = (param) => {
     param.map((tag, indice) => (
       <span key={ indice } data-testid={ `${index}-${tag}-horizontal-tag` }>
         {tag}
       </span>
     ));
-  };
+  }; */
 
   // requisito 47 clipboard
   // import copy from 'clipboard-copy'
   // copy(string que quer copiar aqui)
+  /* const handleShare = (param) => {
+    copy(`http://localhost:3000/meals/${param}`);
+    setAlerta(true);
+  };
+
+  const handleShareDrink = (param) => {
+    copy(`http://localhost:3000/drinks/${param}`);
+    setAlerta(true);
+  }; */
+
   // requisito 48 3 botoes um para filtrar bebidas ,
   // o outro para filtrar comidas e o outro para remover todos
   const handleFilter = (e) => {
@@ -61,6 +76,7 @@ function DoneRecipes() {
 
   return (
     <div>
+      {/* alerta && <span>Link copied!</span> */}
       <Header
         title="Done Recipes"
         search={ false }
@@ -110,7 +126,7 @@ function DoneRecipes() {
                 data-testid={ `${index}-horizontal-image` }
               />
             </Link>
-            <button type="button">
+            <button type="button" onClick={ () => handleShare(receita.id) }>
               <img
                 src={ Share }
                 alt="share button"
@@ -150,7 +166,7 @@ function DoneRecipes() {
                 data-testid={ `${index}-horizontal-image` }
               />
             </Link>
-            <button type="button">
+            <button type="button" onClick={ () => handleShareDrink(receita.id) }>
               <img
                 src={ Share }
                 alt="share button"
@@ -162,7 +178,6 @@ function DoneRecipes() {
             >
               {receita.doneDate}
             </p>
-            { receita.tags && rendery(receita.tags) }
           </div>
         )))}
       </div>

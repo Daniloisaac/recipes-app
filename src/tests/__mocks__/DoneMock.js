@@ -9,7 +9,7 @@ const doneMock = [{
   tags: ['Pasta', 'Curry'],
   type: 'meal',
 },
-{alcoholicOrNot: 'Alcoholic',
+{ alcoholicOrNot: 'Alcoholic',
   category: '',
   doneDate: '2022-10-10T16:49:42.713Z',
   id: '17225',
