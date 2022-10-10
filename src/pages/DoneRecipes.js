@@ -32,7 +32,8 @@ function DoneRecipes() {
   };
 
   // requisito 47 clipboard
-
+  // import copy from 'clipboard-copy'
+  // copy(string que quer copiar aqui)
   // requisito 48 3 botoes um para filtrar bebidas ,
   // o outro para filtrar comidas e o outro para remover todos
   const handleFilter = (e) => {
@@ -79,7 +80,7 @@ function DoneRecipes() {
           onClick={ handleFilter }
           data-testid="filter-by-meal-btn"
         >
-          Mealss
+          Meals
         </button>
         <button
           type="button"
