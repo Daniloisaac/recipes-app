@@ -32,7 +32,7 @@ function FavoriteRecipes() {
         favoriteRecipes={ favoriteRecipes }
         setFavoriteRecipes={ setFavoriteRecipes }
       />
-      {favoriteRecipes.map((recipe, index) => (
+      {favoriteRecipes && favoriteRecipes.map((recipe, index) => (
         <CardFavorites
           key={ recipe.id }
           date={ recipe.doneDate || '' }
