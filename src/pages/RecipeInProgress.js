@@ -30,7 +30,7 @@ function RecipeInProgress(idRecipes) {
       }
     };
     getRecipes();
-  }, []); //eslint-disable-line
+  }, []);  //eslint-disable-line
   let ingredients = [];
   recipes.forEach(
     ({
