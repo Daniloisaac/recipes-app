@@ -67,28 +67,6 @@ export default function RecipeDetails(idRecipes) {
   ingredients = ingredients
     .filter((ingredient) => ingredient !== null);
 
-  // localStorage.setItem('doneRecipes', JSON.stringify([{
-  //   id,
-  //   type: 'mel',
-  //   nationality: '',
-  //   category: '',
-  //   alcoholicOrNot: '',
-  //   name: '',
-  //   image: '',
-  //   doneDate: '',
-  //   tags: '',
-  // }]));
-  // localStorage.setItem('inProgressRecipes', JSON.stringify(
-  //   {
-  //     drinks: {
-  //       [id]: ['lista-de-ingredientes-utilizados'],
-  //     },
-  //     meals: {
-  //       [id]: ['lista-de-ingredientes-utilizados'],
-  //     },
-  //   },
-  // ));
-
   useEffect(() => {
     const recipesFinish = JSON.parse(localStorage.getItem('doneRecipes'));
     if (recipesFinish) {
