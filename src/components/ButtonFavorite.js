@@ -9,7 +9,6 @@ function ButtonFavorite(props) {
   const { id, path } = props;
   const [heartBlack, setHeartBlack] = useState(false);
   const { recipes, setRecipes } = useContext(AppContext);
-  console.log(path);
 
   useEffect(() => {
     const getRecipes = async () => {
@@ -19,7 +18,6 @@ function ButtonFavorite(props) {
         );
         setRecipes(meals);
       } else if (path.includes('drinks')) {
-        // console.log('drinks');
         const drinks = await fetchRecipes(
           `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`,
         );
@@ -60,7 +58,6 @@ function ButtonFavorite(props) {
     }
   }, [heartBlack]);
 
-  console.log(recipes);
   return (
     <div>
       {recipes.map((recipe, i) => (

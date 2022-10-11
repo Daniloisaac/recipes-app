@@ -3,12 +3,10 @@ import { useHistory } from 'react-router-dom';
 import fetchRecipes from '../services';
 import ButtonCopy from '../components/ButtonCopy';
 import ButtonFavorite from '../components/ButtonFavorite';
+import CheckboxRecipes from '../components/CheckboxRecipes';
 
 function RecipeInProgress(idRecipes) {
-  // const [heartBlack, setHeartBlack] = useState(false);
   const [recipes, setRecipes] = useState([{}]);
-  const [checkedBox, setCheckedBox] = useState(true);
-  // const [isDisabled, setIsDisabled] = useState(true);
   const history = useHistory();
   const path = history.location.pathname;
   const {
@@ -16,16 +14,6 @@ function RecipeInProgress(idRecipes) {
       params: { id },
     },
   } = idRecipes;
-
-  const recipesFinish = JSON.parse(localStorage.getItem('inProgressRecipes'));
-
-  useEffect((ingredient) => {
-    setCheckedBox(false);
-    if (recipesFinish && recipesFinish.includes(ingredient)) {
-      setCheckedBox(true);
-      // *******refatorar para componente******
-    }
-  }, []);
 
   useEffect(() => {
     const getRecipes = async () => {
@@ -42,7 +30,7 @@ function RecipeInProgress(idRecipes) {
       }
     };
     getRecipes();
-  }, []);
+  }, []); //eslint-disable-line
   let ingredients = [];
   recipes.forEach(
     ({
@@ -81,46 +69,7 @@ function RecipeInProgress(idRecipes) {
     .filter((ingredient) => ingredient !== null)
     .filter((ingredient) => ingredient !== '');
 
-  const arrayFood = [];
-  const setIngredientsInLocalStorage = (param) => {
-    arrayFood.push(param);
-    localStorage.setItem('inProgressRecipes', JSON.stringify(arrayFood));
-    setCheckedBox(true);
-  };
-
-  const hadleClickFinish = () => {
-    if (path.includes('meals')) {
-      localStorage.setItem('doneRecipes', JSON.stringify([
-        {
-          id: recipes[0].idMeal,
-          type: 'meal',
-          nationality: recipes[0].strArea,
-          category: recipes[0].strCategory,
-          alcoholicOrNot: '',
-          name: recipes[0].strMeal,
-          image: recipes[0].strMealThumb,
-          doneDate: new Date(),
-          tags: recipes[0].strTags && recipes[0].strTags.split(','),
-        }]));
-    } else if (path.includes('drinks')) {
-      localStorage.setItem('doneRecipes', JSON.stringify([
-        {
-          id: recipes[0].idDrink,
-          type: 'drink',
-          nationality: recipes[0].strArea,
-          category: '',
-          alcoholicOrNot: recipes[0].strAlcoholic,
-          name: recipes[0].strDrink,
-          image: recipes[0].strDrinkThumb,
-          doneDate: new Date(),
-          tags: recipes[0].strTags && recipes[0].strTags.split(','),
-        }]));
-    }
-    history.push('/done-recipes');
-  };
-
   const mealsOrDrink = path.includes('meals') ? 'meals' : 'drinks';
-  // console.log(setIsDisabled);
 
   return (
     <div>
@@ -147,34 +96,12 @@ function RecipeInProgress(idRecipes) {
             {path.includes('meals') ? recipe.strCategory : recipe.strAlcoholic}
           </p>
           <p data-testid="instructions">{recipe.strInstructions}</p>
-          <ol>
-            {ingredients.map((ingredient, index, item) => (
-              <li key={ recipes.id }>
-                <label
-                  htmlFor="input-checkbox"
-                  key={ recipes.id }
-                  data-testid={ `${index}-ingredient-step` }
-                >
-                  <input
-                    className="input-checkbox"
-                    type="checkbox"
-                    name={ item }
-                    checked={ checkedBox }
-                    onChange={ () => setIngredientsInLocalStorage(ingredient) }
-                  />
-                  {ingredient}
-                </label>
-              </li>
-            ))}
-          </ol>
-          <button
-            type="button"
-            data-testid="finish-recipe-btn"
-            onClick={ hadleClickFinish }
-            // disabled={ isDisabled }
-          >
-            Finish recipe
-          </button>
+
+          <CheckboxRecipes
+            ingredients={ ingredients }
+            path={ path }
+            recipes={ recipes }
+          />
         </div>
       ))}
     </div>
