@@ -1,6 +1,6 @@
 .containerHeader {
   min-height: 147px;
-  width: 360px;
+  min-width: 100vw;
 }
 
 header {

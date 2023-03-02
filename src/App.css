@@ -25,6 +25,10 @@
   --black-300: #1a1b1c;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 body, input, button, textarea {
   font-family: Epilogue , sans-serif;
   font-size: 16px;
