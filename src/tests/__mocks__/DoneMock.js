@@ -1,0 +1,22 @@
+const doneMock = [{
+  alcoholicOrNot: '',
+  category: 'Vegetarian',
+  doneDate: '2022-10-10T16:45:16.181Z',
+  id: '52771',
+  image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
+  name: 'Spicy Arrabiata Penne',
+  nationality: 'Italian',
+  tags: ['Pasta', 'Curry'],
+  type: 'meal',
+},
+{ alcoholicOrNot: 'Alcoholic',
+  category: '',
+  doneDate: '2022-10-10T16:49:42.713Z',
+  id: '17225',
+  image: 'https://www.thecocktaildb.com/images/media/drink/l3cd7f1504818306.jpg',
+  name: 'Ace',
+  tags: null,
+  type: 'drink',
+},
+];
+export default doneMock;
